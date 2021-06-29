@@ -6,7 +6,7 @@ public abstract class AbstractPredicateWrapper implements IPredicateWrapper {
 
 	protected Predicate<Object> condition;
 
-	public AbstractPredicateWrapper(Predicate<Object> condition) {
+	protected AbstractPredicateWrapper(Predicate<Object> condition) {
 		this.condition = condition;
 	}
 
