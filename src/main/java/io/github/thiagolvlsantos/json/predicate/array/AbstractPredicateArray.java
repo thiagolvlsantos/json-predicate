@@ -7,7 +7,7 @@ public abstract class AbstractPredicateArray implements IPredicateArray {
 
 	protected List<Predicate<Object>> conditions;
 
-	public AbstractPredicateArray(List<Predicate<Object>> conditions) {
+	protected AbstractPredicateArray(List<Predicate<Object>> conditions) {
 		this.conditions = conditions;
 	}
 

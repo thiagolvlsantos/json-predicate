@@ -10,7 +10,7 @@ public abstract class AbstractPredicateValue implements IPredicateValue {
 	protected JsonNode value;
 	protected IAccess access;
 
-	public AbstractPredicateValue(String key, JsonNode value, IAccess access) {
+	protected AbstractPredicateValue(String key, JsonNode value, IAccess access) {
 		this.key = key;
 		this.value = value;
 		this.access = access;
