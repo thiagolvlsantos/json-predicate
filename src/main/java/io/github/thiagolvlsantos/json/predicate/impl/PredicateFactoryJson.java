@@ -55,7 +55,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 			if (key.startsWith("$")) {
 				Class<? extends IPredicate> type = manager.get(key);
 				if (type == null) {
-					throw new RuntimeException("Invalid list operator: " + key + " for " + tree);
+					throw new JsonPredicateException("Invalid list operator: " + key + " for " + tree, null);
 				}
 				if (IPredicateArray.class.isAssignableFrom(type)) {
 					List<Predicate<Object>> list = new LinkedList<>();
@@ -67,7 +67,8 @@ public class PredicateFactoryJson implements IPredicateFactory {
 							list.add(predicate("\t" + gap, value.get(i)));
 						}
 					} else {
-						throw new RuntimeException("Invalid list operator value: '" + value + "' is not a list.");
+						throw new JsonPredicateException("Invalid list operator value: '" + value + "' is not a list.",
+								null);
 					}
 					try {
 						result.add(type.getConstructor(List.class).newInstance(list));
@@ -83,7 +84,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 						throw new JsonPredicateException(e.getMessage(), e);
 					}
 				} else {
-					throw new RuntimeException("Invalid list operator: " + key + " is not a list.");
+					throw new JsonPredicateException("Invalid list operator: " + key + " is not a list.", null);
 				}
 			} else {
 				Iterator<Entry<String, JsonNode>> fs = value.fields();
@@ -93,7 +94,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 					JsonNode va = f.getValue();
 					Class<? extends IPredicate> type = manager.get(op);
 					if (type == null) {
-						throw new RuntimeException("Invalid group operator: " + op + " for " + va);
+						throw new JsonPredicateException("Invalid group operator: " + op + " for " + va, null);
 					}
 					if (IPredicateValue.class.isAssignableFrom(type)) {
 						if (log.isDebugEnabled()) {
@@ -107,7 +108,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 							throw new JsonPredicateException(e.getMessage(), e);
 						}
 					} else {
-						throw new RuntimeException("Invalid group operator: " + op + " is not a value.");
+						throw new JsonPredicateException("Invalid group operator: " + op + " is not a value.", null);
 					}
 				}
 			}

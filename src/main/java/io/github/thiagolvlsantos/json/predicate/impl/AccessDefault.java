@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.BeanUtils;
 
 import io.github.thiagolvlsantos.json.predicate.IAccess;
+import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
 
 public class AccessDefault implements IAccess {
 
@@ -13,7 +14,7 @@ public class AccessDefault implements IAccess {
 		try {
 			return BeanUtils.getProperty(source, path);
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			throw new RuntimeException(e.getMessage(), e);
+			throw new JsonPredicateException(e.getMessage(), e);
 		}
 	}
 }

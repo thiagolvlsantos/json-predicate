@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import io.github.thiagolvlsantos.json.predicate.IPredicateFactory;
+import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
 
 @SuppressWarnings("serial")
 public class PredicateDeserializer extends StdDeserializer<Predicate<Object>> {
@@ -37,7 +38,7 @@ public class PredicateDeserializer extends StdDeserializer<Predicate<Object>> {
 				String json = jsonparser.readValueAsTree().toString();
 				return factory.read(json.getBytes());
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new JsonPredicateException(e.getMessage(), e);
 			}
 		}
 	}
