@@ -1,0 +1,1 @@
+mvn -U verify

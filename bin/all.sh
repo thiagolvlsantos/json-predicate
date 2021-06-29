@@ -1,0 +1,1 @@
+mvn -U -Prelease,sign,local2Nexus release:clean release:prepare release:perform release:clean

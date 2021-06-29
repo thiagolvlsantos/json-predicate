@@ -1,0 +1,1 @@
+mvn -U -B -Prelease -DskipTests -Darguments=-DskipTests release:clean release:prepare
