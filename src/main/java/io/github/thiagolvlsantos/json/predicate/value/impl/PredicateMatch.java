@@ -13,7 +13,7 @@ public class PredicateMatch extends AbstractPredicateValue {
 
 	@Override
 	public boolean test(Object t) {
-		Object tmp = unwrapp(key);
+		Object tmp = unwrapp(t);
 		return String.valueOf(tmp).matches(value.asText());
 	}
 }
