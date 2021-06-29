@@ -21,7 +21,7 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
           
       - name: Publish package
-        run: mvn -Psign,github2Nexus -DskipTests -Darguments=-DskipTests --batch-mode clean deploy 
+        run: mvn -Psign,github2Nexus -DskipTests -Darguments=-DskipTests --batch-mode --no-transfer-progress clean deploy 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}           
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
