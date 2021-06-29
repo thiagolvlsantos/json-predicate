@@ -1,5 +1,7 @@
 package io.github.thiagolvlsantos.json.predicate.impl;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +17,7 @@ import io.github.thiagolvlsantos.json.predicate.IPredicateFactory;
 import io.github.thiagolvlsantos.json.predicate.IPredicateManager;
 import io.github.thiagolvlsantos.json.predicate.array.IPredicateArray;
 import io.github.thiagolvlsantos.json.predicate.array.impl.PredicateAnd;
+import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
 import io.github.thiagolvlsantos.json.predicate.value.IPredicateValue;
 import io.github.thiagolvlsantos.json.predicate.wrapper.IPredicateWrapper;
 import lombok.Setter;
@@ -29,16 +32,20 @@ public class PredicateFactoryJson implements IPredicateFactory {
 	private IAccess access = new AccessDefault();
 
 	@Override
-	public Predicate<Object> read(byte[] content) throws Exception {
-		return read(mapper.readTree(content));
+	public Predicate<Object> read(byte[] content) throws JsonPredicateException {
+		try {
+			return read(mapper.readTree(content));
+		} catch (JsonPredicateException | IOException e) {
+			throw new JsonPredicateException(e.getMessage(), e);
+		}
 	}
 
 	@Override
-	public Predicate<Object> read(JsonNode content) throws Exception {
+	public Predicate<Object> read(JsonNode content) throws JsonPredicateException {
 		return predicate("\t", (JsonNode) content);
 	}
 
-	private Predicate<Object> predicate(String gap, JsonNode tree) throws Exception {
+	private Predicate<Object> predicate(String gap, JsonNode tree) throws JsonPredicateException {
 		List<Predicate<Object>> result = new LinkedList<>();
 		Iterator<Entry<String, JsonNode>> fields = tree.fields();
 		while (fields.hasNext()) {
@@ -62,9 +69,19 @@ public class PredicateFactoryJson implements IPredicateFactory {
 					} else {
 						throw new RuntimeException("Invalid list operator value: '" + value + "' is not a list.");
 					}
-					result.add(type.getConstructor(List.class).newInstance(list));
+					try {
+						result.add(type.getConstructor(List.class).newInstance(list));
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+						throw new JsonPredicateException(e.getMessage(), e);
+					}
 				} else if (IPredicateWrapper.class.isAssignableFrom(type)) {
-					result.add(type.getConstructor(Predicate.class).newInstance(predicate("\t" + gap, value)));
+					try {
+						result.add(type.getConstructor(Predicate.class).newInstance(predicate("\t" + gap, value)));
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+						throw new JsonPredicateException(e.getMessage(), e);
+					}
 				} else {
 					throw new RuntimeException("Invalid list operator: " + key + " is not a list.");
 				}
@@ -82,8 +99,13 @@ public class PredicateFactoryJson implements IPredicateFactory {
 						if (log.isDebugEnabled()) {
 							log.debug(gap + " VALUE>" + type.getSimpleName() + " " + key + ": " + value);
 						}
-						result.add(type.getConstructor(String.class, JsonNode.class, IAccess.class).newInstance(key, va,
-								access));
+						try {
+							result.add(type.getConstructor(String.class, JsonNode.class, IAccess.class).newInstance(key,
+									va, access));
+						} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+								| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+							throw new JsonPredicateException(e.getMessage(), e);
+						}
 					} else {
 						throw new RuntimeException("Invalid group operator: " + op + " is not a value.");
 					}
