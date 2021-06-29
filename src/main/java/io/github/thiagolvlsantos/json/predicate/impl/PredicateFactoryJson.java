@@ -42,7 +42,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 
 	@Override
 	public Predicate<Object> read(JsonNode content) throws JsonPredicateException {
-		return predicate("\t", (JsonNode) content);
+		return predicate("\t", content);
 	}
 
 	private Predicate<Object> predicate(String gap, JsonNode tree) throws JsonPredicateException {
