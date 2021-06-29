@@ -13,7 +13,7 @@ import io.github.thiagolvlsantos.json.predicate.IPredicateFactory;
 public class PredicateDeserializer extends StdDeserializer<Predicate<Object>> {
 
 	private static Object lock = new Object();
-	public static IPredicateFactory factory;
+	private static IPredicateFactory factory;
 
 	public PredicateDeserializer() {
 		this(null);
@@ -21,6 +21,10 @@ public class PredicateDeserializer extends StdDeserializer<Predicate<Object>> {
 
 	public PredicateDeserializer(Class<?> vc) {
 		super(vc);
+	}
+
+	public static void setFactory(IPredicateFactory factory) {
+		PredicateDeserializer.factory = factory;
 	}
 
 	@Override
