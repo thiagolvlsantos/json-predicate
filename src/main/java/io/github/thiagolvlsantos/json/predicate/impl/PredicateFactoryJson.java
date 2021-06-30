@@ -20,10 +20,12 @@ import io.github.thiagolvlsantos.json.predicate.array.impl.PredicateAnd;
 import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
 import io.github.thiagolvlsantos.json.predicate.value.IPredicateValue;
 import io.github.thiagolvlsantos.json.predicate.wrapper.IPredicateWrapper;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Setter
+@Getter
 @Slf4j
 public class PredicateFactoryJson implements IPredicateFactory {
 
@@ -86,13 +88,12 @@ public class PredicateFactoryJson implements IPredicateFactory {
 				list.add(predicate("\t" + gap, value.get(i)));
 			}
 		} else {
-			throw new JsonPredicateException("Invalid list operator value: '" + value + "' is not a list.",
-					null);
+			throw new JsonPredicateException("Invalid list operator value: '" + value + "' is not a list.", null);
 		}
 		try {
 			result.add(type.getConstructor(List.class).newInstance(list));
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			throw new JsonPredicateException(e.getMessage(), e);
 		}
 	}
@@ -101,8 +102,8 @@ public class PredicateFactoryJson implements IPredicateFactory {
 			Class<? extends IPredicate> type) {
 		try {
 			result.add(type.getConstructor(Predicate.class).newInstance(predicate("\t" + gap, value)));
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			throw new JsonPredicateException(e.getMessage(), e);
 		}
 	}
@@ -131,10 +132,9 @@ public class PredicateFactoryJson implements IPredicateFactory {
 			log.debug(gap + " VALUE>" + type.getSimpleName() + " " + key + ": " + value);
 		}
 		try {
-			result.add(type.getConstructor(String.class, JsonNode.class, IAccess.class).newInstance(key,
-					va, access));
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			result.add(type.getConstructor(String.class, JsonNode.class, IAccess.class).newInstance(key, va, access));
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			throw new JsonPredicateException(e.getMessage(), e);
 		}
 	}
