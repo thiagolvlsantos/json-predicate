@@ -37,9 +37,13 @@ public class PredicateManagerDefault implements IPredicateManager {
 		this.put("$lt", PredicateLower.class);
 		this.put("$le", PredicateLowerEquals.class);
 		this.put("$match", PredicateMatch.class);
+		this.put("$m", PredicateMatch.class);
 		this.put("$nmatch", PredicateNotMatch.class);
+		this.put("$nm", PredicateNotMatch.class);
 		this.put("$contains", PredicateContains.class);
+		this.put("$c", PredicateContains.class);
 		this.put("$ncontains", PredicateNotContains.class);
+		this.put("$nc", PredicateNotContains.class);
 	}
 
 	@Override
