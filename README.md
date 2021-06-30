@@ -8,8 +8,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.thiagolvlsantos/json-predicate/badge.svg)](https://repo1.maven.org/maven2/io/github/thiagolvlsantos/json-predicate/)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-
-Predicate builder over a JSON specification. Specify you query in a JSON format and check it against a given object.
+Specify a predicate in a JSON format and check it against a given object.
 
 ## Usage
 
@@ -25,9 +24,9 @@ Include latest version [![Maven Central](https://maven-badges.herokuapp.com/mave
 
 ## Predicates
 
-The objective of this API is to create a `Predicate<Object>` based on a JSON specification of attributes and logical operations.
+The objective of this library is to create a `Predicate<Object>` based on a JSON specification which includes different types of predicates. The general idea is that these JSON predicates can be build using a GUI and be used in `filter` operations. 
 
-An example of a JSON predicate:
+An example of a JSON predicate filtering objects (or maps) whose field/key called 'name' contains the String 'project':
 ```json
 {
    "name": {
@@ -36,19 +35,21 @@ An example of a JSON predicate:
 }
 ```
 
-Suppose there is a `List<Project>` where each project has a name, the following code will filter only those with `project` in its attribute name.
+Suppose there is a `List<Project>` where each project has a `String:name` attribute, the following code will filter only those with `project` in its attribute 'name'.
 
 ```java
+	String filter = "{\"name\":{\"$contains\": \"project\"}}";
 	IPredicateFactory factory = new PredicateFactoryJson();
-	Predicate<Object> p = factory.read("{\"name\":{\"$contains\": \"project\"}}");
-	List<Project> projects = ...//load list
+	Predicate<Object> p = factory.read(filter);
+	List<Project> projects = ...// loaded list from somewhere
 	return projects.stream().filter(p).collect(Collectors.toList());
 
 ```
+In this example, if we provide the filter value using a GUI the underlying Java code remains unchanged.
 
 ## Predefined constructors
 
-The set of build-in operators provided.
+Bellow a list of the built-in provided predicates, you can register you own predicate. Checkout the interface [`IPredicateManager`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/impl/PredicateManagerDefault.java) implementation.
 
 ### Logical operators
 
@@ -74,7 +75,7 @@ The set of build-in operators provided.
 |$contains or $c | ``` {"name": {"$contains": "proj"} }```|
 |$ncontains or $nc | ``` {"name": {"$ncontains": "A"} }```|
 |$match or $m | ``` {"name": {"$match": "\d{8}"} }```|
-|$nmatch or $nm | ``` {"name": {"$nm": "\d{8}"} }```|
+|$nmatch or $nm | ``` {"name": {"$nmatch": "\d{8}"} }```|
 
 ## Build
 
