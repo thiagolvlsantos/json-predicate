@@ -1,13 +1,13 @@
 package io.github.thiagolvlsantos.json.predicate.array.impl;
 
 import java.util.List;
-import java.util.function.Predicate;
 
+import io.github.thiagolvlsantos.json.predicate.IPredicate;
 import io.github.thiagolvlsantos.json.predicate.array.AbstractPredicateArray;
 
 public class PredicateOr extends AbstractPredicateArray {
 
-	public PredicateOr(List<Predicate<Object>> conditions) {
+	public PredicateOr(List<IPredicate> conditions) {
 		super(conditions);
 	}
 

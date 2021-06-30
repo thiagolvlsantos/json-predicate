@@ -1,13 +1,14 @@
 package io.github.thiagolvlsantos.json.predicate.array;
 
 import java.util.List;
-import java.util.function.Predicate;
+
+import io.github.thiagolvlsantos.json.predicate.IPredicate;
 
 public abstract class AbstractPredicateArray implements IPredicateArray {
 
-	protected List<Predicate<Object>> conditions;
+	protected List<IPredicate> conditions;
 
-	protected AbstractPredicateArray(List<Predicate<Object>> conditions) {
+	protected AbstractPredicateArray(List<IPredicate> conditions) {
 		this.conditions = conditions;
 	}
 

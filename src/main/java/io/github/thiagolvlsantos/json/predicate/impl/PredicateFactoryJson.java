@@ -34,7 +34,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 	private IAccess access = new AccessDefault();
 
 	@Override
-	public Predicate<Object> read(byte[] content) throws JsonPredicateException {
+	public IPredicate read(byte[] content) throws JsonPredicateException {
 		try {
 			return read(mapper.readTree(content));
 		} catch (JsonPredicateException | IOException e) {
@@ -43,12 +43,12 @@ public class PredicateFactoryJson implements IPredicateFactory {
 	}
 
 	@Override
-	public Predicate<Object> read(JsonNode content) throws JsonPredicateException {
+	public IPredicate read(JsonNode content) throws JsonPredicateException {
 		return predicate("\t", content);
 	}
 
-	private Predicate<Object> predicate(String gap, JsonNode tree) throws JsonPredicateException {
-		List<Predicate<Object>> result = new LinkedList<>();
+	private IPredicate predicate(String gap, JsonNode tree) throws JsonPredicateException {
+		List<IPredicate> result = new LinkedList<>();
 		Iterator<Entry<String, JsonNode>> fields = tree.fields();
 		while (fields.hasNext()) {
 			Entry<String, JsonNode> n = fields.next();
@@ -63,7 +63,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 		return result.size() > 1 ? new PredicateAnd(result) : result.get(0);
 	}
 
-	private void operations(String gap, JsonNode tree, List<Predicate<Object>> result, String key, JsonNode value) {
+	private void operations(String gap, JsonNode tree, List<IPredicate> result, String key, JsonNode value) {
 		Class<? extends IPredicate> type = manager.get(key);
 		if (type == null) {
 			throw new JsonPredicateException("Invalid list operator: " + key + " for " + tree, null);
@@ -77,7 +77,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 		}
 	}
 
-	private void predicateArray(String gap, List<Predicate<Object>> result, String key, JsonNode value,
+	private void predicateArray(String gap, List<IPredicate> result, String key, JsonNode value,
 			Class<? extends IPredicate> type) {
 		List<Predicate<Object>> list = new LinkedList<>();
 		if (value.isArray()) {
@@ -98,7 +98,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 		}
 	}
 
-	private void predicateWrapper(String gap, List<Predicate<Object>> result, JsonNode value,
+	private void predicateWrapper(String gap, List<IPredicate> result, JsonNode value,
 			Class<? extends IPredicate> type) {
 		try {
 			result.add(type.getConstructor(Predicate.class).newInstance(predicate("\t" + gap, value)));
@@ -108,7 +108,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 		}
 	}
 
-	private void fields(String gap, List<Predicate<Object>> result, String key, JsonNode value) {
+	private void fields(String gap, List<IPredicate> result, String key, JsonNode value) {
 		Iterator<Entry<String, JsonNode>> fs = value.fields();
 		while (fs.hasNext()) {
 			Entry<String, JsonNode> f = fs.next();
@@ -126,7 +126,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 		}
 	}
 
-	private void fieldValue(String gap, List<Predicate<Object>> result, String key, JsonNode value, JsonNode va,
+	private void fieldValue(String gap, List<IPredicate> result, String key, JsonNode value, JsonNode va,
 			Class<? extends IPredicate> type) {
 		if (log.isDebugEnabled()) {
 			log.debug(gap + " VALUE>" + type.getSimpleName() + " " + key + ": " + value);
