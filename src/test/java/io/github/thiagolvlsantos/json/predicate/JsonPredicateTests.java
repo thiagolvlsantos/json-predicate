@@ -8,13 +8,21 @@ import java.util.function.Predicate;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
 import io.github.thiagolvlsantos.json.predicate.impl.PredicateFactoryJson;
 
+@RunWith(Parameterized.class)
 public class JsonPredicateTests {
 
 	private IPredicateFactory factory = new PredicateFactoryJson();
 	private static Map<String, Object> map;
+
+	@Parameter
+	public String expression;
 
 	@BeforeClass
 	public static void map() {
@@ -24,51 +32,23 @@ public class JsonPredicateTests {
 		map.put("c", "any");
 	}
 
-	@Test
-	public void testEquals() {
-		Predicate<Object> pred = factory.read("{\"a\":{\"$eq\":1}}".getBytes());
-		assertTrue(pred.test(map));
+	@Parameters(name = "Expression: {0}")
+	public static String[] expressions() {
+		return new String[] { //
+				"{\"a\":{\"$eq\":1}}", //
+				"{\"a\":{\"$ne\":2}}", //
+				"{\"b\":{\"$eq\":true}}", //
+				"{\"b\":{\"$ne\":false}}", //
+				"{\"c\":{\"$contains\":\"any\"}}", //
+				"{\"c\":{\"$ncontains\":\"other\"}}", //
+				"{\"c\":{\"$match\":\"any\"}}", //
+				"{\"c\":{\"$nmatch\":\"her\"}}" //
+		};
 	}
 
 	@Test
-	public void testNotEquals() {
-		Predicate<Object> pred = factory.read("{\"a\":{\"$ne\":2}}".getBytes());
-		assertTrue(pred.test(map));
-	}
-
-	@Test
-	public void testTrue() {
-		Predicate<Object> pred = factory.read("{\"b\":{\"$eq\":true}}".getBytes());
-		assertTrue(pred.test(map));
-	}
-
-	@Test
-	public void testFalse() {
-		Predicate<Object> pred = factory.read("{\"b\":{\"$ne\":false}}".getBytes());
-		assertTrue(pred.test(map));
-	}
-
-	@Test
-	public void testContains() {
-		Predicate<Object> pred = factory.read("{\"c\":{\"$contains\":\"any\"}}".getBytes());
-		assertTrue(pred.test(map));
-	}
-
-	@Test
-	public void testNotContains() {
-		Predicate<Object> pred = factory.read("{\"c\":{\"$ncontains\":\"other\"}}".getBytes());
-		assertTrue(pred.test(map));
-	}
-
-	@Test
-	public void testMatch() {
-		Predicate<Object> pred = factory.read("{\"c\":{\"$match\":\"any\"}}".getBytes());
-		assertTrue(pred.test(map));
-	}
-
-	@Test
-	public void testNotMatch() {
-		Predicate<Object> pred = factory.read("{\"c\":{\"$nmatch\":\"her\"}}".getBytes());
+	public void test() {
+		Predicate<Object> pred = factory.read(expression.getBytes());
 		assertTrue(pred.test(map));
 	}
 }
