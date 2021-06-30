@@ -4,7 +4,7 @@
 
 	<groupId>io.github.thiagolvlsantos</groupId>
 	<artifactId>json-predicate</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 
 	<name>${project.artifactId}</name>
 	<description>Common classes for Git family projects.</description>
@@ -50,7 +50,7 @@
 		<url>https://${project.domain.name}/${project.owner.login}/${project.artifactId}.git</url>
 		<connection>scm:git:git://${project.domain.name}/${project.owner.login}/${project.artifactId}.git</connection>
 		<developerConnection>scm:git:git@${project.domain.name}:${project.owner.login}/${project.artifactId}.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>json-predicate-0.0.3</tag>
 	</scm>
 
 	<url>https://${project.domain.name}/${project.owner.login}/${project.artifactId}</url>
