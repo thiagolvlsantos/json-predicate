@@ -23,6 +23,43 @@ Include latest version [![Maven Central](https://maven-badges.herokuapp.com/mave
 		</dependency>
 ```
 
+## Predicates
+
+The objective of this API is to create a `Predicate<Object>` based on a JSON specification of attributes and logical operations.
+
+An example of a JSON predicate:
+```json
+{
+   "name": {
+     "$contains": "project"
+   }
+}
+```
+
+Suppose there is a `List<Project>` where each project has a name, the following code will filter only those with `project` in its attribute name.
+
+```java
+	IPredicateFactory factory = new PredicateFactoryJson();
+	Predicate<Object> p = factory.read("{\"name\":{\"$contains\": \"project\"}}");
+	List<Project> projects = ...//load list
+	return projects.stream().filter(p).collect(Collectors.toList());
+
+```
+
+## Predefined constructors
+
+The set of build-in operators provided.
+
+### Logical operators
+
+|--|
+| Type | Example
+|--|
+|$and|
+|$or|
+|$not
+|--|
+
 ## Build
 
 Localy, from this root directory call Maven commands or `bin/<script name>` at our will.
