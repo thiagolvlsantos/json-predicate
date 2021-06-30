@@ -52,13 +52,29 @@ The set of build-in operators provided.
 
 ### Logical operators
 
-|--|
-| Type | Example
-|--|
-|$and|
-|$or|
-|$not
-|--|
+| Type | Example |
+| -- | -- |
+|$and | ``` { "$and": [ {"name": {"$contains": "project"} }, { "created": {"$gt": "2021-06-29 00:31:45.0000"} ] }``` |
+|$or | ``` { "$or": [ {"name": {"$contains": "project"} }, { "id": {"$gt": "10"} ] }``` |
+|$not| ``` { "$not": {"name": {"$eq": "null"} } }``` |
+
+### Relational operators
+| Type | Example |
+| -- | -- |
+|$eq | ``` {"name": {"$eq": "projectA"} } ```|
+|$ne | ``` {"name": {"$ne": "projectB"} }```|
+|$lt | ``` {"revision": {"$lt": 10} }```|
+|$le | ``` {"revision": {"$le": 1} }```|
+|$gt | ``` {"revision": {"$gt": 1} }```|
+|$ge | ``` {"revision": {"$ge": 2} }```|
+
+### String operators
+| Type | Example |
+| -- | -- |
+|$contains or $c | ``` {"name": {"$contains": "proj"} }```|
+|$ncontains or $nc | ``` {"name": {"$ncontains": "A"} }```|
+|$match or $m | ``` {"name": {"$match": "\d{8}"} }```|
+|$nmatch or $nm | ``` {"name": {"$nm": "\d{8}"} }```|
 
 ## Build
 
