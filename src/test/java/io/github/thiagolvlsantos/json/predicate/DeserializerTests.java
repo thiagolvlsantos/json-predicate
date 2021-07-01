@@ -1,6 +1,6 @@
 package io.github.thiagolvlsantos.json.predicate;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -47,7 +47,7 @@ public class DeserializerTests {
 		Rule rule = mapper.readValue(Files.readAllBytes(Paths.get("src/test/resources/example_rule.json")), Rule.class);
 		List<Map<String, Object>> filtered = projects.stream().filter(p -> rule.getCondition().test(p))
 				.collect(Collectors.toList());
-		assertTrue(filtered.size() == 1);
-		assertTrue(filtered.get(0).get("name").equals("projectAlfa"));
+		assertEquals(1, filtered.size());
+		assertEquals("projectAlfa", filtered.get(0).get("name"));
 	}
 }
