@@ -77,6 +77,44 @@ Bellow a list of the built-in provided predicates, you can register you own pred
 |$match or $m | ``` {"name": {"$match": "\d{8}"} }```|
 |$nmatch or $nm | ``` {"name": {"$nmatch": "\d{8}"} }```|
 
+## Deserialization
+
+A class can have an attribute annotated with `@JsonDeserializer` to read a `Predicate<Object>` straightforward.
+
+```java
+@Data
+public class Rule {
+
+	private String name;
+
+	@JsonDeserialize(using = PredicateDeserializer.class)
+	private Predicate<Object> condition;
+}
+```
+
+A file `example_rule.json`:
+
+```json
+{
+	"name": "Filter projects with A",
+	"condition": {
+		"name": {
+			"$contains": "A"
+		}
+	}
+}
+```
+can be read by a Jackson `ObjectMapper` just like this:
+```java
+	ObjectMapper mapper = new ObjectMapper();
+	Rule rule = mapper.readValue(Files.readAllBytes(Paths.get("example_rule.json")), Rule.class);
+```
+ The resulting instance of `Rule` has the `condition` attribute already set to a `Predicate<Object>`.
+ 
+ Notice that this approach can be used for deserializing REST calls where `@Payload` is an object of type `Rule`. On the other hand the serialization process is not defined, unless you write a serializer for a generic predicate (next steps?). 
+ 
+ As a generic solution could be a `Rule` class with `condition` as `String` for storage/serialization/deserialization in CRUD features, and a `RuleExec` with `condition` as `Predicate<Object>` to the moments where the rule is expected to be processed. It`s up to you use what fits your needs.
+
 ## Build
 
 Localy, from this root directory call Maven commands or `bin/<script name>` at our will.
