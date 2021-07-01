@@ -47,4 +47,9 @@ public class DeserializerTest {
 		assertEquals(1, filtered.size());
 		assertEquals("projectAlfa", filtered.get(0).get("name"));
 	}
+
+	@Test
+	public void testRepeat() throws Exception {
+		test();
+	}
 }
