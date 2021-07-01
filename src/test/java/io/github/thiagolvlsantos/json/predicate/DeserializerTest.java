@@ -16,7 +16,7 @@ import org.junit.runners.Parameterized.Parameter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class DeserializerTests {
+public class DeserializerTest {
 
 	private static List<Map<String, Object>> projects;
 
