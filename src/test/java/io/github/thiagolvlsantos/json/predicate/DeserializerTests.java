@@ -16,11 +16,8 @@ import org.junit.runners.Parameterized.Parameter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.github.thiagolvlsantos.json.predicate.impl.PredicateFactoryJson;
-
 public class DeserializerTests {
 
-	private IPredicateFactory factory = new PredicateFactoryJson();
 	private static List<Map<String, Object>> projects;
 
 	@Parameter
