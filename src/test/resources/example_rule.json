@@ -1,0 +1,8 @@
+{
+	"name": "Filter projects with A",
+	"condition": {
+		"name": {
+			"$contains": "A"
+		}
+	}
+}

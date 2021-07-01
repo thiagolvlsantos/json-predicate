@@ -30,6 +30,7 @@ public class JsonPredicateTests {
 		map.put("a", 1);
 		map.put("b", true);
 		map.put("c", "any");
+		System.out.println("MAP:" + map);
 	}
 
 	@Parameters(name = "Expression: {0}")
@@ -37,18 +38,26 @@ public class JsonPredicateTests {
 		return new String[] { //
 				"{\"a\":{\"$eq\":1}}", //
 				"{\"a\":{\"$ne\":2}}", //
+				"{\"$not\": {\"a\":{\"$ne\":1}}}", //
+				"{\"a\":{\"$lt\":2}}", //
+				"{\"a\":{\"$le\":1}}", //
+				"{\"a\":{\"$gt\":0}}", //
+				"{\"a\":{\"$ge\":1}}", //
 				"{\"b\":{\"$eq\":true}}", //
 				"{\"b\":{\"$ne\":false}}", //
 				"{\"c\":{\"$contains\":\"any\"}}", //
 				"{\"c\":{\"$ncontains\":\"other\"}}", //
 				"{\"c\":{\"$match\":\"any\"}}", //
-				"{\"c\":{\"$nmatch\":\"her\"}}" //
+				"{\"c\":{\"$nmatch\":\"her\"}}", //
+				"{\"$and\": [ {\"b\": {\"$eq\": true} }, {\"a\":{\"$eq\":1}} ] }", //
+				"{\"$or\": [ {\"a\":{\"$eq\":1}}, {\"b\":{\"$eq\": false} } ] }", //
 		};
 	}
 
 	@Test
 	public void test() {
 		Predicate<Object> pred = factory.read(expression.getBytes());
-		assertTrue(pred.test(map));
+		boolean test = pred.test(map);
+		assertTrue(test);
 	}
 }
