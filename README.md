@@ -114,7 +114,7 @@ can be read by a Jackson `ObjectMapper` just like this:
  
  Notice that this approach can be used for deserializing REST calls where `@Payload` is an object of type `Rule`. On the other hand the serialization process is not defined, unless you write a serializer for a generic predicate (next steps?). 
  
- As a generic solution could be a `Rule` class with `condition` as `String` for storage/serialization/deserialization in CRUD features, and a `RuleExec` with `condition` as `Predicate<Object>` to the moments where the rule is expected to be processed. It`s up to you use what fit your needs.
+ As a generic solution there could be a `Rule` class with `condition` as `String` for storage/serialization/deserialization in CRUD features, and a `RuleExec` with `condition` as `Predicate<Object>` to the moments where the rule is expected to be processed. It`s up to you use what fit your needs.
 
 ## Build
 
