@@ -108,7 +108,7 @@ can be read by a Jackson `ObjectMapper` just like this:
 ```java
 	ObjectMapper mapper = new ObjectMapper();
 	Rule rule = mapper.readValue(Files.readAllBytes(Paths.get("example_rule.json")), Rule.class);
-	Predicate<Object> condition = rule.getCondition(); // condition ready to by apply
+	Predicate<Object> condition = rule.getCondition(); // condition ready to apply
 ```
  The resulting instance of `Rule` has the `condition` attribute already set to a `Predicate<Object>`.
  
