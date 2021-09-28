@@ -30,6 +30,7 @@ public class JsonPredicateTest {
 		map.put("a", 1);
 		map.put("b", true);
 		map.put("c", "any");
+		map.put("d", new String("Testing byte array!").getBytes());
 		System.out.println("MAP:" + map);
 	}
 
@@ -51,6 +52,7 @@ public class JsonPredicateTest {
 				"{\"c\":{\"$nmatch\":\"her\"}}", //
 				"{\"$and\": [ {\"b\": {\"$eq\": true} }, {\"a\":{\"$eq\":1}} ] }", //
 				"{\"$or\": [ {\"a\":{\"$eq\":1}}, {\"b\":{\"$eq\": false} } ] }", //
+				"{\"d\":{\"$contains\":\"array\"}}" //
 		};
 	}
 
