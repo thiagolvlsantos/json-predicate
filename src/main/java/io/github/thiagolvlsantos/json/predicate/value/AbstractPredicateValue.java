@@ -17,7 +17,11 @@ public abstract class AbstractPredicateValue implements IPredicateValue {
 	}
 
 	protected Object unwrapp(Object source) {
-		return access.get(source, key);
+		Object object = access.get(source, key);
+		if (object instanceof byte[]) {
+			return new String((byte[]) object);
+		}
+		return object;
 	}
 
 	@Override
