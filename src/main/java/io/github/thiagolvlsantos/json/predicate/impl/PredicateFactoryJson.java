@@ -81,9 +81,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 			Class<? extends IPredicate> type) {
 		List<Predicate<Object>> list = new LinkedList<>();
 		if (value.isArray()) {
-			if (log.isDebugEnabled()) {
-				log.debug(gap + " LIST>" + type.getSimpleName() + "  " + key + ": " + value);
-			}
+			log.debug("{} LIST>{}  {}: {}", gap, type.getSimpleName(), key, value);
 			for (int i = 0; i < value.size(); i++) {
 				list.add(predicate("\t" + gap, value.get(i)));
 			}
@@ -128,9 +126,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 
 	private void fieldValue(String gap, List<IPredicate> result, String key, JsonNode value, JsonNode va,
 			Class<? extends IPredicate> type) {
-		if (log.isDebugEnabled()) {
-			log.debug(gap + " VALUE>" + type.getSimpleName() + " " + key + ": " + value);
-		}
+		log.debug("{} VALUE>{} {}: {}", gap, type.getSimpleName(), key, value);
 		try {
 			result.add(type.getConstructor(String.class, JsonNode.class, IAccess.class).newInstance(key, va, access));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
