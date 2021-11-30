@@ -7,7 +7,7 @@
 	<version>0.0.7-SNAPSHOT</version>
 
 	<name>${project.artifactId}</name>
-	<description>Common classes for Git family projects.</description>
+	<description>Predicate&lt;Object&gt; automatic creation from JSON queries.</description>
 
 	<properties>
 		<!-- PROJECT INFORMATION -->
