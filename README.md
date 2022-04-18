@@ -118,4 +118,4 @@ can be read by a Jackson `ObjectMapper` just like this:
 
 ## Build
 
-Localy, from this root directory call Maven commands or `bin/<script name>` at our will.
+Localy, from this root directory call Maven commands or `bin/<script name>` at your will.
