@@ -2,6 +2,7 @@ package io.github.thiagolvlsantos.json.predicate;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -31,6 +32,12 @@ public class JsonPredicateTest {
 		map.put("b", true);
 		map.put("c", "any");
 		map.put("d", new String("Testing byte array!").getBytes());
+		map.put("e", Arrays.asList("a", "b", "c"));
+		map.put("f", Arrays.asList(1, 2, 3));
+		map.put("g", new String[] { "a", "b", "c" });
+		map.put("h", new int[] { 1, 2, 3 });
+		map.put("i", new int[][] { new int[] { 1, 2 }, new int[] { 3, 4 } });
+		map.put("j", new String[][] { new String[] { "alfa", "beta" }, new String[] { "gama", "teta" } });
 		System.out.println("MAP:" + map);
 	}
 
@@ -52,7 +59,17 @@ public class JsonPredicateTest {
 				"{\"c\":{\"$nmatch\":\"her\"}}", //
 				"{\"$and\": [ {\"b\": {\"$eq\": true} }, {\"a\":{\"$eq\":1}} ] }", //
 				"{\"$or\": [ {\"a\":{\"$eq\":1}}, {\"b\":{\"$eq\": false} } ] }", //
-				"{\"d\":{\"$contains\":\"array\"}}" //
+				"{\"d\":{\"$contains\":\"array\"}}", //
+				"{\"e\":{\"$contains\":\"a\"}}", //
+				"{\"f\":{\"$contains\":\"1\"}}", //
+				"{\"g\":{\"$contains\":\"b\"}}", //
+				"{\"h\":{\"$contains\":\"2\"}}", //
+				"{\"i\":{\"$contains\":\"4\"}}", //
+				"{\"j\":{\"$contains\":\"am\"}}", //
+				"{\"j.[0]\":{\"$contains\":\"beta\"}}", //
+				"{\"j.[0]\":{\"$ncontains\":\"gama\"}}", //
+				"{\"j.[0].[0]\":{\"$eq\":\"alfa\"}}", //
+				"{\"j.[0].[1]\":{\"$ne\":\"alfa\"}}", //
 		};
 	}
 
