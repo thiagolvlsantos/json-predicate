@@ -13,7 +13,6 @@ public class PredicateLower extends AbstractPredicateValue {
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
 	public boolean test(Object t) {
 		Object left = left(t);
 		Object right = right(left);
