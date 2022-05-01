@@ -17,6 +17,6 @@ public class PredicateEquals extends AbstractPredicateValue {
 	@Override
 	public boolean test(Object t) {
 		Object left = left(t);
-		return Objects.equals(left, right(left));
+		return Objects.equals(left, right(t, left));
 	}
 }

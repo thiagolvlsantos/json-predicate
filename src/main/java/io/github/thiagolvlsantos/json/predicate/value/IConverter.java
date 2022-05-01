@@ -4,5 +4,5 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public interface IConverter {
 
-	Object convert(Object example, JsonNode value);
+	Object convert(Object source, IAccess access, Object example, JsonNode value);
 }

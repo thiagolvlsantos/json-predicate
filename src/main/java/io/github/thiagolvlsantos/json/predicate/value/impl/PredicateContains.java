@@ -19,14 +19,14 @@ public class PredicateContains extends AbstractPredicateValue {
 	@Override
 	public boolean test(Object t) {
 		Object left = left(t);
-		return check(left);
+		return check(left, left);
 	}
 
-	protected boolean check(Object tmp) {
+	protected boolean check(Object base, Object tmp) {
 		if (tmp instanceof Collection<?>) {
 			for (Iterator<?> iterator = ((Collection<?>) tmp).iterator(); iterator.hasNext();) {
 				Object obj = iterator.next();
-				if (check(obj)) {
+				if (check(base, obj)) {
 					return true;
 				}
 			}
@@ -35,20 +35,20 @@ public class PredicateContains extends AbstractPredicateValue {
 		if (tmp != null && tmp.getClass().isArray()) {
 			for (int i = 0; i < Array.getLength(tmp); i++) {
 				Object obj = Array.get(tmp, i);
-				if (check(obj)) {
+				if (check(base, obj)) {
 					return true;
 				}
 			}
 			return false;
 		}
-		return innerCheck(tmp);
+		return innerCheck(base, tmp);
 	}
 
-	protected boolean innerCheck(Object tmp) {
+	protected boolean innerCheck(Object base, Object tmp) {
 		if (tmp instanceof String) {
-			return String.valueOf(tmp).contains(String.valueOf(right(tmp)));
+			return String.valueOf(tmp).contains(String.valueOf(right(base, tmp)));
 		} else {
-			return tmp.equals(right(tmp));
+			return tmp.equals(right(base, tmp));
 		}
 	}
 }

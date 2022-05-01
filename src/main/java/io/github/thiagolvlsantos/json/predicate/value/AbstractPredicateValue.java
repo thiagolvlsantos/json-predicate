@@ -25,8 +25,8 @@ public abstract class AbstractPredicateValue implements IPredicateValue {
 		return left;
 	}
 
-	protected Object right(Object left) {
-		return converter.convert(left, value);
+	protected Object right(Object source, Object left) {
+		return converter.convert(source, access, left, value);
 	}
 
 	@Override

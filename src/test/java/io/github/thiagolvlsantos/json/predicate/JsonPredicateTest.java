@@ -109,6 +109,7 @@ public class JsonPredicateTest {
 				"{\"d1\":{\"$<\":\"" + date.format(tomorow1) + "\"}}", //
 				"{\"d2\":{\"$<\":\"" + localDate.format(tomorow2) + "\"}}", //
 				"{\"d3\":{\"$<\":\"" + localDateTime.format(tomorow3) + "\"}}", //
+				"{\"m\":{\"$<\":\"@n\"}}", //
 		};
 	}
 

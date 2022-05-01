@@ -8,18 +8,23 @@ import java.util.Date;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import io.github.thiagolvlsantos.json.predicate.value.IAccess;
 import io.github.thiagolvlsantos.json.predicate.value.IConverter;
 import lombok.SneakyThrows;
 
 public class ConverterDefault implements IConverter {
 
-	private SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-	private DateTimeFormatter localDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private DateTimeFormatter localDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+	private static final String VARIABLE = "@";
+	private static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	private static DateTimeFormatter localDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private static DateTimeFormatter localDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
 	@Override
-	public Object convert(Object example, JsonNode value) {
-		if (example instanceof Boolean) {
+	public Object convert(Object source, IAccess access, Object example, JsonNode value) {
+		String text = value.asText();
+		if (text.startsWith(VARIABLE)) {
+			return toAccess(source, access, text.substring(1));
+		} else if (example instanceof Boolean) {
 			return value.asBoolean();
 		} else if (example instanceof Short) {
 			return (short) value.asInt();
@@ -39,6 +44,11 @@ public class ConverterDefault implements IConverter {
 			return toLocalDateTime(value.asText());
 		}
 		return value.asText();
+	}
+
+	@SneakyThrows
+	private Object toAccess(Object source, IAccess access, String path) {
+		return access.get(source, path);
 	}
 
 	@SneakyThrows
