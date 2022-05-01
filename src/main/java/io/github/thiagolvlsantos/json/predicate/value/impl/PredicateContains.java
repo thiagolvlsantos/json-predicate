@@ -25,7 +25,7 @@ public class PredicateContains extends AbstractPredicateValue {
 	protected boolean check(Object tmp) {
 		if (tmp instanceof Collection<?>) {
 			for (Iterator<?> iterator = ((Collection<?>) tmp).iterator(); iterator.hasNext();) {
-				Object obj = (Object) iterator.next();
+				Object obj = iterator.next();
 				if (check(obj)) {
 					return true;
 				}
