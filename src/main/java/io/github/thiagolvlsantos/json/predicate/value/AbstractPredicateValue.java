@@ -2,8 +2,6 @@ package io.github.thiagolvlsantos.json.predicate.value;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import io.github.thiagolvlsantos.json.predicate.IAccess;
-
 public abstract class AbstractPredicateValue implements IPredicateValue {
 
 	protected String key;
@@ -18,10 +16,16 @@ public abstract class AbstractPredicateValue implements IPredicateValue {
 
 	protected Object unwrapp(Object source) {
 		Object object = access.get(source, key);
+		converted(object);
 		if (object instanceof byte[]) {
 			return new String((byte[]) object);
 		}
 		return object;
+	}
+
+	protected Object converted(Object reference) {
+		System.out.println(reference != null ? reference.getClass() : null);
+		return reference;
 	}
 
 	@Override

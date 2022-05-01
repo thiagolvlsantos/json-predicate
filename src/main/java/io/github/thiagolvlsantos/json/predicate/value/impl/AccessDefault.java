@@ -1,12 +1,13 @@
-package io.github.thiagolvlsantos.json.predicate.impl;
+package io.github.thiagolvlsantos.json.predicate.value.impl;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import io.github.thiagolvlsantos.json.predicate.IAccess;
 import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
+import io.github.thiagolvlsantos.json.predicate.value.IAccess;
 
 public class AccessDefault implements IAccess {
 
@@ -14,6 +15,18 @@ public class AccessDefault implements IAccess {
 	public Object get(Object source, String path) {
 		try {
 			return PropertyUtils.getProperty(source, path);
+		} catch (NestedNullException e) {
+			return null;
+		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			throw new JsonPredicateException(e.getMessage(), e);
+		}
+	}
+
+	@Override
+	public Class<?> type(Object source, String path) {
+		try {
+			PropertyDescriptor pd = PropertyUtils.getPropertyDescriptor(source, path);
+			return pd != null ? pd.getPropertyType() : null;
 		} catch (NestedNullException e) {
 			return null;
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

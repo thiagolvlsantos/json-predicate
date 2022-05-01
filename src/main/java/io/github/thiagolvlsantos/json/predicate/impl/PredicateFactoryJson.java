@@ -11,14 +11,15 @@ import java.util.function.Predicate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.github.thiagolvlsantos.json.predicate.IAccess;
 import io.github.thiagolvlsantos.json.predicate.IPredicate;
 import io.github.thiagolvlsantos.json.predicate.IPredicateFactory;
 import io.github.thiagolvlsantos.json.predicate.IPredicateManager;
 import io.github.thiagolvlsantos.json.predicate.array.IPredicateArray;
 import io.github.thiagolvlsantos.json.predicate.array.impl.PredicateAnd;
 import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
+import io.github.thiagolvlsantos.json.predicate.value.IAccess;
 import io.github.thiagolvlsantos.json.predicate.value.IPredicateValue;
+import io.github.thiagolvlsantos.json.predicate.value.impl.AccessDefault;
 import io.github.thiagolvlsantos.json.predicate.wrapper.IPredicateWrapper;
 import lombok.Getter;
 import lombok.Setter;

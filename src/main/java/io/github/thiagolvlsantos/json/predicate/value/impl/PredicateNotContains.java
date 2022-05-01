@@ -2,7 +2,7 @@ package io.github.thiagolvlsantos.json.predicate.value.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import io.github.thiagolvlsantos.json.predicate.IAccess;
+import io.github.thiagolvlsantos.json.predicate.value.IAccess;
 
 public class PredicateNotContains extends PredicateContains {
 
