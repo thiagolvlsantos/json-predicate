@@ -18,8 +18,10 @@ import io.github.thiagolvlsantos.json.predicate.array.IPredicateArray;
 import io.github.thiagolvlsantos.json.predicate.array.impl.PredicateAnd;
 import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
 import io.github.thiagolvlsantos.json.predicate.value.IAccess;
+import io.github.thiagolvlsantos.json.predicate.value.IConverter;
 import io.github.thiagolvlsantos.json.predicate.value.IPredicateValue;
 import io.github.thiagolvlsantos.json.predicate.value.impl.AccessDefault;
+import io.github.thiagolvlsantos.json.predicate.value.impl.ConverterDefault;
 import io.github.thiagolvlsantos.json.predicate.wrapper.IPredicateWrapper;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +35,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 	private ObjectMapper mapper = new ObjectMapper();
 	private IPredicateManager manager = new PredicateManagerDefault();
 	private IAccess access = new AccessDefault();
+	private IConverter converter = new ConverterDefault();
 
 	@Override
 	public IPredicate read(byte[] content) throws JsonPredicateException {
@@ -129,7 +132,8 @@ public class PredicateFactoryJson implements IPredicateFactory {
 			Class<? extends IPredicate> type) {
 		log.debug("{} VALUE>{} {}: {}", gap, type.getSimpleName(), key, value);
 		try {
-			result.add(type.getConstructor(String.class, JsonNode.class, IAccess.class).newInstance(key, va, access));
+			result.add(type.getConstructor(String.class, IAccess.class, JsonNode.class, IConverter.class)
+					.newInstance(key, access, va, converter));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			throw new JsonPredicateException(e.getMessage(), e);

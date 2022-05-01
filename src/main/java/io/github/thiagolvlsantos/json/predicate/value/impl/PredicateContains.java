@@ -8,17 +8,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import io.github.thiagolvlsantos.json.predicate.value.AbstractPredicateValue;
 import io.github.thiagolvlsantos.json.predicate.value.IAccess;
+import io.github.thiagolvlsantos.json.predicate.value.IConverter;
 
 public class PredicateContains extends AbstractPredicateValue {
 
-	public PredicateContains(String key, JsonNode value, IAccess access) {
-		super(key, value, access);
+	public PredicateContains(String key, IAccess access, JsonNode value, IConverter converter) {
+		super(key, access, value, converter);
 	}
 
 	@Override
 	public boolean test(Object t) {
-		Object tmp = unwrapp(t);
-		return check(tmp);
+		Object left = left(t);
+		return check(left);
 	}
 
 	protected boolean check(Object tmp) {
@@ -44,6 +45,10 @@ public class PredicateContains extends AbstractPredicateValue {
 	}
 
 	protected boolean innerCheck(Object tmp) {
-		return String.valueOf(tmp).contains(value.asText());
+		if (tmp instanceof String) {
+			return String.valueOf(tmp).contains(String.valueOf(right(tmp)));
+		} else {
+			return tmp.equals(right(tmp));
+		}
 	}
 }

@@ -4,16 +4,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import io.github.thiagolvlsantos.json.predicate.value.AbstractPredicateValue;
 import io.github.thiagolvlsantos.json.predicate.value.IAccess;
+import io.github.thiagolvlsantos.json.predicate.value.IConverter;
 
 public class PredicateGreaterEquals extends AbstractPredicateValue {
 
 	private PredicateGreater greater;
 	private PredicateEquals equals;
 
-	public PredicateGreaterEquals(String key, JsonNode value, IAccess access) {
-		super(key, value, access);
-		greater = new PredicateGreater(key, value, access);
-		equals = new PredicateEquals(key, value, access);
+	public PredicateGreaterEquals(String key, IAccess access, JsonNode value, IConverter converter) {
+		super(key, access, value, converter);
+		greater = new PredicateGreater(key, access, value, converter);
+		equals = new PredicateEquals(key, access, value, converter);
 	}
 
 	@Override

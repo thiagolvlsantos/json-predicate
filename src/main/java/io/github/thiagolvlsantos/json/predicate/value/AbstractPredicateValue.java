@@ -5,27 +5,28 @@ import com.fasterxml.jackson.databind.JsonNode;
 public abstract class AbstractPredicateValue implements IPredicateValue {
 
 	protected String key;
-	protected JsonNode value;
 	protected IAccess access;
 
-	protected AbstractPredicateValue(String key, JsonNode value, IAccess access) {
+	protected JsonNode value;
+	protected IConverter converter;
+
+	protected AbstractPredicateValue(String key, IAccess access, JsonNode value, IConverter converter) {
 		this.key = key;
-		this.value = value;
 		this.access = access;
+		this.value = value;
+		this.converter = converter;
 	}
 
-	protected Object unwrapp(Object source) {
-		Object object = access.get(source, key);
-		converted(object);
-		if (object instanceof byte[]) {
-			return new String((byte[]) object);
+	protected Object left(Object source) {
+		Object left = access.get(source, key);
+		if (left instanceof byte[]) {
+			left = new String((byte[]) left);
 		}
-		return object;
+		return left;
 	}
 
-	protected Object converted(Object reference) {
-		System.out.println(reference != null ? reference.getClass() : null);
-		return reference;
+	protected Object right(Object left) {
+		return converter.convert(left, value);
 	}
 
 	@Override

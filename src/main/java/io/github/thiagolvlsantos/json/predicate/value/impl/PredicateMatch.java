@@ -4,16 +4,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import io.github.thiagolvlsantos.json.predicate.value.AbstractPredicateValue;
 import io.github.thiagolvlsantos.json.predicate.value.IAccess;
+import io.github.thiagolvlsantos.json.predicate.value.IConverter;
 
 public class PredicateMatch extends AbstractPredicateValue {
 
-	public PredicateMatch(String key, JsonNode value, IAccess access) {
-		super(key, value, access);
+	public PredicateMatch(String key, IAccess access, JsonNode value, IConverter converter) {
+		super(key, access, value, converter);
 	}
 
 	@Override
 	public boolean test(Object t) {
-		Object tmp = unwrapp(t);
-		return String.valueOf(tmp).matches(value.asText());
+		Object left = left(t);
+		return String.valueOf(left).matches(value.asText());
 	}
 }

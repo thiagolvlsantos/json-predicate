@@ -24,26 +24,51 @@ public class PredicateManagerDefault implements IPredicateManager {
 	private Map<String, Class<? extends IPredicate>> map = new HashMap<>();
 
 	public PredicateManagerDefault() {
-		// arrays
+		// Arrays
 		this.put("$and", PredicateAnd.class);
+		this.put("$&", PredicateAnd.class);
+
 		this.put("$or", PredicateOr.class);
-		// wrappers
+		this.put("$|", PredicateOr.class);
+
+		// Wrappers
 		this.put("$not", PredicateNot.class);
-		// values
+		this.put("$!", PredicateNot.class);
+
+		// Values
 		this.put("$eq", PredicateEquals.class);
+		this.put("$==", PredicateEquals.class);
+
 		this.put("$ne", PredicateNotEquals.class);
+		this.put("$!=", PredicateNotEquals.class);
+
 		this.put("$gt", PredicateGreater.class);
+		this.put("$>", PredicateGreater.class);
+
 		this.put("$ge", PredicateGreaterEquals.class);
+		this.put("$>=", PredicateGreaterEquals.class);
+
 		this.put("$lt", PredicateLower.class);
+		this.put("$<", PredicateLower.class);
+
 		this.put("$le", PredicateLowerEquals.class);
+		this.put("$<=", PredicateLowerEquals.class);
+
 		this.put("$match", PredicateMatch.class);
 		this.put("$m", PredicateMatch.class);
+
 		this.put("$nmatch", PredicateNotMatch.class);
 		this.put("$nm", PredicateNotMatch.class);
+		this.put("$!match", PredicateNotMatch.class);
+		this.put("$!m", PredicateNotMatch.class);
+
 		this.put("$contains", PredicateContains.class);
 		this.put("$c", PredicateContains.class);
+
 		this.put("$ncontains", PredicateNotContains.class);
 		this.put("$nc", PredicateNotContains.class);
+		this.put("$!contains", PredicateNotContains.class);
+		this.put("$!c", PredicateNotContains.class);
 	}
 
 	@Override
