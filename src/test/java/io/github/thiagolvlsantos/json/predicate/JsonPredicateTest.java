@@ -2,7 +2,12 @@ package io.github.thiagolvlsantos.json.predicate;
 
 import static org.junit.Assert.assertTrue;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -21,6 +26,23 @@ public class JsonPredicateTest {
 
 	private IPredicateFactory factory = new PredicateFactoryJson();
 	private static Map<String, Object> map;
+
+	private static final int DAY = 24 * 60 * 60 * 1000;
+	private static Date yesterday1 = new Date(System.currentTimeMillis() - DAY);
+	private static Date today1 = new Date();
+	private static Date tomorow1 = new Date(System.currentTimeMillis() + DAY);
+
+	private static LocalDate yesterday2 = LocalDate.now().minusDays(1);
+	private static LocalDate today2 = LocalDate.now();
+	private static LocalDate tomorow2 = LocalDate.now().plusDays(1);
+
+	private static LocalDateTime yesterday3 = LocalDateTime.now().minusDays(1);
+	private static LocalDateTime today3 = LocalDateTime.now();
+	private static LocalDateTime tomorow3 = LocalDateTime.now().plusDays(1);
+
+	private static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	private static DateTimeFormatter localDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private static DateTimeFormatter localDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
 	@Parameter
 	public String expression;
@@ -42,6 +64,9 @@ public class JsonPredicateTest {
 		map.put("l", 0L);
 		map.put("m", (float) 0.5);
 		map.put("n", (double) 1.0);
+		map.put("d1", today1);
+		map.put("d2", today2);
+		map.put("d3", today3);
 		System.out.println("MAP:" + map);
 	}
 
@@ -78,6 +103,12 @@ public class JsonPredicateTest {
 				"{\"l\":{\"$eq\":0}}", //
 				"{\"m\":{\"$eq\":0.5}}", //
 				"{\"n\":{\"$eq\":1.0}}", //
+				"{\"d1\":{\"$>\":\"" + date.format(yesterday1) + "\"}}", //
+				"{\"d2\":{\"$>\":\"" + localDate.format(yesterday2) + "\"}}", //
+				"{\"d3\":{\"$>\":\"" + localDateTime.format(yesterday3) + "\"}}", //
+				"{\"d1\":{\"$<\":\"" + date.format(tomorow1) + "\"}}", //
+				"{\"d2\":{\"$<\":\"" + localDate.format(tomorow2) + "\"}}", //
+				"{\"d3\":{\"$<\":\"" + localDateTime.format(tomorow3) + "\"}}", //
 		};
 	}
 
