@@ -17,7 +17,7 @@ public class PredicateLower extends AbstractPredicateValue {
 		Object left = left(t);
 		Object right = right(left);
 		if (left instanceof Comparable && right instanceof Comparable && left.getClass() == right.getClass()) {
-			return ((Comparable) left).compareTo((Comparable) right) < 0;
+			return ((Comparable) left).compareTo(right) < 0;
 		}
 		return String.valueOf(left).compareTo(String.valueOf(right)) < 0;
 	}
