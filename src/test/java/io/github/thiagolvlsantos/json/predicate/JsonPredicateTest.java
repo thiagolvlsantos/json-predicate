@@ -38,6 +38,10 @@ public class JsonPredicateTest {
 		map.put("h", new int[] { 1, 2, 3 });
 		map.put("i", new int[][] { new int[] { 1, 2 }, new int[] { 3, 4 } });
 		map.put("j", new String[][] { new String[] { "alfa", "beta" }, new String[] { "gama", "teta" } });
+		map.put("k", (short) 0);
+		map.put("l", 0L);
+		map.put("m", (float) 0.5);
+		map.put("n", (double) 1.0);
 		System.out.println("MAP:" + map);
 	}
 
@@ -70,6 +74,10 @@ public class JsonPredicateTest {
 				"{\"j.[0]\":{\"$ncontains\":\"gama\"}}", //
 				"{\"j.[0].[0]\":{\"$eq\":\"alfa\"}}", //
 				"{\"j.[0].[1]\":{\"$ne\":\"alfa\"}}", //
+				"{\"k\":{\"$eq\":0}}", //
+				"{\"l\":{\"$eq\":0}}", //
+				"{\"m\":{\"$eq\":0.5}}", //
+				"{\"n\":{\"$eq\":1.0}}", //
 		};
 	}
 

@@ -11,13 +11,13 @@ public class ConverterDefault implements IConverter {
 		if (example instanceof Boolean) {
 			return value.asBoolean();
 		} else if (example instanceof Short) {
-			return value.asInt();
+			return (short) value.asInt();
 		} else if (example instanceof Integer) {
 			return value.asInt();
 		} else if (example instanceof Long) {
 			return value.asLong();
 		} else if (example instanceof Float) {
-			return value.asDouble();
+			return (float) value.asDouble();
 		} else if (example instanceof Double) {
 			return value.asDouble();
 		}
