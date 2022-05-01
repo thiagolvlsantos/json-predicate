@@ -16,7 +16,7 @@ public class PredicateGreater extends AbstractPredicateValue {
 	public boolean test(Object t) {
 		Object left = left(t);
 		Object right = right(left);
-		if (left instanceof Comparable && right instanceof Comparable && left.getClass() == right.getClass()) {
+		if (left instanceof Comparable && left.getClass() == right.getClass()) {
 			return ((Comparable) left).compareTo(right) > 0;
 		}
 		return String.valueOf(left).compareTo(String.valueOf(right)) > 0;
