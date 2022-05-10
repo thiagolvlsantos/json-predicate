@@ -36,27 +36,34 @@ public class PredicateManagerDefault implements IPredicateManager {
 		this.put("$!", PredicateNot.class);
 
 		// Values
+		this.put("$equals", PredicateEquals.class);
 		this.put("$eq", PredicateEquals.class);
 		this.put("$==", PredicateEquals.class);
 
+		this.put("$notEquals", PredicateNotEquals.class);
 		this.put("$ne", PredicateNotEquals.class);
 		this.put("$!=", PredicateNotEquals.class);
 
+		this.put("$greaterThan", PredicateGreater.class);
 		this.put("$gt", PredicateGreater.class);
 		this.put("$>", PredicateGreater.class);
 
+		this.put("$greaterEqualsThan", PredicateGreaterEquals.class);
 		this.put("$ge", PredicateGreaterEquals.class);
 		this.put("$>=", PredicateGreaterEquals.class);
 
+		this.put("$lowerThan", PredicateLower.class);
 		this.put("$lt", PredicateLower.class);
 		this.put("$<", PredicateLower.class);
 
+		this.put("$lowerEqualsThan", PredicateLowerEquals.class);
 		this.put("$le", PredicateLowerEquals.class);
 		this.put("$<=", PredicateLowerEquals.class);
 
 		this.put("$match", PredicateMatch.class);
 		this.put("$m", PredicateMatch.class);
 
+		this.put("$notMatch", PredicateNotMatch.class);
 		this.put("$nmatch", PredicateNotMatch.class);
 		this.put("$nm", PredicateNotMatch.class);
 		this.put("$!match", PredicateNotMatch.class);
@@ -65,6 +72,7 @@ public class PredicateManagerDefault implements IPredicateManager {
 		this.put("$contains", PredicateContains.class);
 		this.put("$c", PredicateContains.class);
 
+		this.put("$notContains", PredicateNotContains.class);
 		this.put("$ncontains", PredicateNotContains.class);
 		this.put("$nc", PredicateNotContains.class);
 		this.put("$!contains", PredicateNotContains.class);

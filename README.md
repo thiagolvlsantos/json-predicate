@@ -26,6 +26,18 @@ Include latest version [![Maven Central](https://maven-badges.herokuapp.com/mave
 
 The objective of this library is to create a `Predicate<Object>` based on a JSON specification which includes different types of predicates. The general idea is that these JSON predicates can be build using a GUI and be used in `filter` operations. 
 
+The general form of a predicate is:
+
+```json
+{ 
+	"<path1>" : { "<operator>": "<value> | $<path2>" } 
+}
+```
+where:
+- ```path1``` and ```path2```: stands for a references like that the ones provided by ```BeanUtils``` expressions;
+- ```operator``` : is one of the possible operators predefined, or loaded by your code;
+- ```value```: is a string to be converted for comparison;
+
 An example of a JSON predicate filtering objects (or maps) whose field/key called 'name' contains the String 'project':
 ```json
 {
@@ -47,6 +59,16 @@ Suppose there is a `List<Project>` where each project has a `String:name` attrib
 ```
 In this example, if we provide the filter value using a GUI the underlying Java code remains unchanged.
 
+## Converters
+Based on ```path1``` type the ```value``` is converted according to it. i.e for comparison with date the [`IConverter`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/value/impl/ConverterDefault.java) takes place and convert for types:
+| Attribute type | Value converted to compariosn using |
+| -- | -- |
+| ```java.util.Date``` | ```yyyy-MM-dd HH:mm:ss.SSS``` |
+| ```java.time.LocalDate``` | ```yyyy-MM-dd``` |
+| ```java.time.LocalDateTime``` | ```yyyy-MM-dd HH:mm:ss.SSS``` |
+
+These converters can be replaced using respective set method in the predicate manager describe bellow.
+
 ## Predefined constructors
 
 Bellow a list of the built-in provided predicates, you can register you own predicate. Checkout the interface [`IPredicateManager`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/impl/PredicateManagerDefault.java) implementation.
@@ -55,27 +77,40 @@ Bellow a list of the built-in provided predicates, you can register you own pred
 
 | Type | Example |
 | -- | -- |
-|$and | ``` { "$and": [ {"name": {"$contains": "project"} }, { "created": {"$gt": "2021-06-29 00:31:45.0000"} ] }``` |
-|$or | ``` { "$or": [ {"name": {"$contains": "project"} }, { "id": {"$gt": "10"} ] }``` |
-|$not| ``` { "$not": {"name": {"$eq": "null"} } }``` |
+|\$and, \$& | ``` { "$and": [ {"name": {"$contains": "project"} }, { "created": {"$gt": "2021-06-29 00:31:45.000"} ] }``` |
+|\$or, \$\\| | ``` { "$or": [ {"name": {"$contains": "project"} }, { "id": {"$gt": "10"} ] }``` |
+|\$not, \$! | ``` { "$not": {"name": {"$eq": "null"} } }``` |
 
 ### Relational operators
 | Type | Example |
 | -- | -- |
-|$eq | ``` {"name": {"$eq": "projectA"} } ```|
-|$ne | ``` {"name": {"$ne": "projectB"} }```|
-|$lt | ``` {"revision": {"$lt": 10} }```|
-|$le | ``` {"revision": {"$le": 1} }```|
-|$gt | ``` {"revision": {"$gt": 1} }```|
-|$ge | ``` {"revision": {"$ge": 2} }```|
+|\$eq, $==, $equals | ``` {"name": {"$eq": "projectA"} } ```|
+|\$ne, $!=, $notEquals | ``` {"name": {"$ne": "projectB"} }```|
+|\$lt, $<, $lowerThan | ``` {"revision": {"$lt": 10} }```|
+|\$le, $<=, $lowerEqualsThan | ``` {"revision": {"$le": 1} }```|
+|\$gt, $>, $greaterThan | ``` {"revision": {"$gt": 1} }```|
+|\$ge, $>=, $greaterEqualsThan | ``` {"revision": {"$ge": 2} }```|
 
 ### String operators
 | Type | Example |
 | -- | -- |
-|$contains or $c | ``` {"name": {"$contains": "proj"} }```|
-|$ncontains or $nc | ``` {"name": {"$ncontains": "A"} }```|
-|$match or $m | ``` {"name": {"$match": "\d{8}"} }```|
-|$nmatch or $nm | ``` {"name": {"$nmatch": "\d{8}"} }```|
+|\$contains, \$c | ``` {"name": {"$contains": "proj"} }```|
+|\$ncontains, \$nc, \$notContains, \$!contains, \$!c  | ``` {"name": {"$ncontains": "A"} }```|
+|\$match, \$m | ``` {"name": {"$match": "\d{8}"} }```|
+|\$nmatch, \$nm, \$notMatch, \$!match, \$!m | ``` {"name": {"$nmatch": "\d{8}"} }```|
+
+### Set operators 
+| | |
+| -- | -- |
+|\$contains, \$c | ``` {"tags": {"$contains": "debug"} }``` |
+|\$ncontains, \$nc, \$notContains, \$!contains, \$!c  | ``` {"tags": {"$ncontains": "git"} }``` |
+
+### Variable operators 
+You can use values reffering to another variables. i.e. if project changed date is greater than project creation date.
+
+|  |  |
+| -- | -- |
+| "path1" { "operator":"\$path2" }  | ``` {"changed": {"$>": "$created"} }```|
 
 ## Deserialization
 
