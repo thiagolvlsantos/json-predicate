@@ -15,9 +15,9 @@ import lombok.SneakyThrows;
 public class ConverterDefault implements IConverter {
 
 	private static final String VARIABLE = "@";
-	private static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-	private static DateTimeFormatter localDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static DateTimeFormatter localDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+	private SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	private DateTimeFormatter localDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private DateTimeFormatter localDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
 	@Override
 	public Object convert(Object source, IAccess access, Object example, JsonNode value) {

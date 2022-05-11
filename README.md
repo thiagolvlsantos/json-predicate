@@ -29,7 +29,7 @@ The objective of this library is to create a `Predicate<Object>` based on a JSON
 The general form of a predicate is:
 ```json
 { 
-	"<path1>" : { "<operator>": "<value> | $<path2>" } 
+	"<path1>" : { "<operator>": "<value> | @<path2>" } 
 }
 ```
 where:
@@ -117,7 +117,7 @@ You can use values reffering to another variables. i.e. if project changed date 
 
 |  |  |
 | -- | -- |
-| "path1" { "operator":"\$path2" }  | ``` {"changed": {"$>": "$created"} }```|
+| "path1" { "operator":"@path2" }  | ``` {"changed": {"$>": "@created"} }```|
 
 ## Overriding operators
 If you want to override an operator add its mapping to the file ```json-predicate.properties``` together with an ```order``` key which is used to define precedence. The default file has ```order=0```.
