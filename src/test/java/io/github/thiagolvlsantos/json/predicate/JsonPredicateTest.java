@@ -24,7 +24,7 @@ import io.github.thiagolvlsantos.json.predicate.impl.PredicateFactoryJson;
 @RunWith(Parameterized.class)
 public class JsonPredicateTest {
 
-	private IPredicateFactory factory = new PredicateFactoryJson();
+	private static IPredicateFactory factory = new PredicateFactoryJson();
 	private static Map<String, Object> map;
 
 	private static final int DAY = 24 * 60 * 60 * 1000;

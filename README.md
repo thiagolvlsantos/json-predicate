@@ -27,14 +27,13 @@ Include latest version [![Maven Central](https://maven-badges.herokuapp.com/mave
 The objective of this library is to create a `Predicate<Object>` based on a JSON specification which includes different types of predicates. The general idea is that these JSON predicates can be build using a GUI and be used in `filter` operations. 
 
 The general form of a predicate is:
-
 ```json
 { 
 	"<path1>" : { "<operator>": "<value> | $<path2>" } 
 }
 ```
 where:
-- ```path1``` and ```path2```: stands for a references like that the ones provided by ```BeanUtils``` expressions;
+- ```path1``` and ```path2```: stands for references like that the ones provided by Jakarta ```BeanUtils|PropertyUtils``` expressions (you can change it by implementing the interface ``IAccess``);
 - ```operator``` : is one of the possible operators predefined, or loaded by your code;
 - ```value```: is a string to be converted for comparison;
 
@@ -50,9 +49,11 @@ An example of a JSON predicate filtering objects (or maps) whose field/key calle
 Suppose there is a `List<Project>` where each project has a `String:name` attribute, the following code will filter only those with `project` in its attribute 'name'.
 
 ```java
-	String filter = "{\"name\":{\"$contains\": \"project\"}}";
 	IPredicateFactory factory = new PredicateFactoryJson();
+
+	String filter = "{\"name\":{\"$contains\": \"project\"}}";
 	Predicate<Object> p = factory.read(filter);
+
 	List<Project> projects = ...// loaded list from somewhere
 	return projects.stream().filter(p).collect(Collectors.toList());
 
@@ -71,7 +72,13 @@ These converters can be replaced using respective set method in the predicate ma
 
 ## Predefined constructors
 
-Bellow a list of the built-in provided predicates, you can register you own predicate. Checkout the interface [`IPredicateManager`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/impl/PredicateManagerDefault.java) implementation.
+There is a list of the built-in provided predicates, you can register you own predicate. Checkout the interface [`IPredicateManager`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/impl/PredicateManagerDefault.java) implementation which load operators from properties.
+
+```properties
+$and,$&=io.github.thiagolvlsantos.json.predicate.array.impl.PredicateAnd
+```
+
+This class loads files in classpath (```json-predicate.properties```) with operators mappings, such as the example bellow. A default mapping ([json-predicate_default.properties]((https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/resources/json-predicate_default.properties))) is provided with the following built-in operators.
 
 ### Logical operators
 
@@ -111,6 +118,16 @@ You can use values reffering to another variables. i.e. if project changed date 
 |  |  |
 | -- | -- |
 | "path1" { "operator":"\$path2" }  | ``` {"changed": {"$>": "$created"} }```|
+
+## Overriding operators
+If you want to override an operator add its mapping to the file ```json-predicate.properties``` together with an ```order``` key which is used to define precedence. The default file has ```order=0```.
+
+For example, if you want to override ```$and``` in your file ```json-predicate.properties``` do:
+
+```properties
+order=1
+$and,$&=mypackage.MyPredicate
+```
 
 ## Deserialization
 

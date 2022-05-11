@@ -44,6 +44,9 @@
 		<commons.version>1.9.4</commons.version>
 		<logback.version>1.2.3</logback.version>
 		<slf4j.version>1.7.30</slf4j.version>
+		
+		<!-- PERSONAL -->
+		<git-commons.version>1.0.31-SNAPSHOT</git-commons.version>
 	</properties>
 
 	<scm>
@@ -83,6 +86,11 @@
 	</issueManagement>
 
 	<dependencies>
+		<dependency>
+			<groupId>io.github.thiagolvlsantos</groupId>
+			<artifactId>git-commons</artifactId>
+			<version>${git-commons.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
