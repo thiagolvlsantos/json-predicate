@@ -1,5 +1,6 @@
 package io.github.thiagolvlsantos.json.predicate.value.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class ConverterDefault implements IConverter {
 	private DateTimeFormatter localDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private DateTimeFormatter localDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
+	@SneakyThrows
 	@Override
 	public Object convert(Object source, IAccess access, Object example, JsonNode value) {
 		String text = value.asText();
@@ -46,22 +48,18 @@ public class ConverterDefault implements IConverter {
 		return value.asText();
 	}
 
-	@SneakyThrows
 	private Object toAccess(Object source, IAccess access, String path) {
 		return access.get(source, path);
 	}
 
-	@SneakyThrows
-	private Date toDate(String str) {
+	private Date toDate(String str) throws ParseException {
 		return date.parse(str);
 	}
 
-	@SneakyThrows
 	private LocalDate toLocalDate(String str) {
 		return LocalDate.parse(str, localDate);
 	}
 
-	@SneakyThrows
 	private LocalDateTime toLocalDateTime(String str) {
 		return LocalDateTime.parse(str, localDateTime);
 	}
