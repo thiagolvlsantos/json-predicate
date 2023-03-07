@@ -54,6 +54,9 @@ public class PredicateFactoryJson implements IPredicateFactory {
 	private IPredicate predicate(String gap, JsonNode tree) throws JsonPredicateException {
 		List<IPredicate> result = new LinkedList<>();
 		Iterator<Entry<String, JsonNode>> fields = tree.fields();
+		if (!fields.hasNext()) {
+			throw new JsonPredicateException("Fields for filter not found.", null);
+		}
 		while (fields.hasNext()) {
 			Entry<String, JsonNode> n = fields.next();
 			String key = n.getKey();
@@ -64,7 +67,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 				fields(gap, result, key, value);
 			}
 		}
-		return result.size() > 1 ? new PredicateAnd(result) : result.get(0);
+		return result.size() == 1 ? result.get(0) : new PredicateAnd(result);
 	}
 
 	private void operations(String gap, JsonNode tree, List<IPredicate> result, String key, JsonNode value) {
@@ -112,6 +115,9 @@ public class PredicateFactoryJson implements IPredicateFactory {
 
 	private void fields(String gap, List<IPredicate> result, String key, JsonNode value) {
 		Iterator<Entry<String, JsonNode>> fs = value.fields();
+		if (!fs.hasNext()) {
+			throw new JsonPredicateException("Fields for filter not found.", null);
+		}
 		while (fs.hasNext()) {
 			Entry<String, JsonNode> f = fs.next();
 			String op = f.getKey();
