@@ -14,13 +14,28 @@ public class IssuesTest {
 	// Issue: #1
 	@Test
 	public void testSimpleMatch() throws Exception {
-		String rule = "{\n" + " \"$and\": [\n" + " {\n" + " \"source\": {\"$eq\":\"weather2\"}\n" + " }\n" + " ]\n"
-				+ "}";
-		System.out.println(rule);
+		PredicateFactoryJson factory = new PredicateFactoryJson();
 		Map<String, Object> mapData = new HashMap<>();
+		String rule = null;
+
+		// exact match
+		rule = "{\n" + " \"$and\": [\n" + " {\n" + " \"source\": {\"$eq\":\"weather2\"}\n" + " }\n" + " ]\n" + "}";
+		Predicate<Object> pred = factory.read(rule.getBytes());
+		// positive test
 		mapData.put("source", "weather2");
-		Predicate<Object> pred = new PredicateFactoryJson().read(rule.getBytes());
-		boolean test = pred.test(mapData);
-		Assert.assertTrue(test);
+		Assert.assertTrue(pred.test(mapData));
+		// negative test
+		mapData.put("source", "weather3");
+		Assert.assertFalse(pred.test(mapData));
+
+		// example with contains 'weather'
+		rule = "{\n" + " \"$and\": [\n" + " {\n" + " \"source\": {\"$contains\":\"weather\"}\n" + " }\n" + " ]\n" + "}";
+		mapData.put("source", "weather2");
+		pred = factory.read(rule.getBytes());
+		Assert.assertTrue(pred.test(mapData));
+		mapData.put("source", "weather3");
+		Assert.assertTrue(pred.test(mapData));
+		mapData.put("source", "anyvalue");
+		Assert.assertFalse(pred.test(mapData));
 	}
 }
