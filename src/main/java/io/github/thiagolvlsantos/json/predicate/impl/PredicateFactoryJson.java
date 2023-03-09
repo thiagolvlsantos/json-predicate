@@ -116,7 +116,18 @@ public class PredicateFactoryJson implements IPredicateFactory {
 	private void fields(String gap, List<IPredicate> result, String key, JsonNode value) {
 		Iterator<Entry<String, JsonNode>> fs = value.fields();
 		if (!fs.hasNext()) {
-			throw new JsonPredicateException("Fields for filter not found.", null);
+			String op = "$eq";
+			Class<? extends IPredicate> type = manager.get(op);
+			JsonNode va = value;
+			if (type == null) {
+				throw new JsonPredicateException("Invalid group operator: " + op + " for " + va, null);
+			}
+			if (IPredicateValue.class.isAssignableFrom(type)) {
+				fieldValue(gap, result, key, value, va, type);
+			} else {
+				throw new JsonPredicateException("Invalid group operator: " + op + " is not a value.", null);
+			}
+			return;
 		}
 		while (fs.hasNext()) {
 			Entry<String, JsonNode> f = fs.next();
