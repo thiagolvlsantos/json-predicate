@@ -38,4 +38,17 @@ public class IssuesTest {
 		mapData.put("source", "anyvalue");
 		Assert.assertFalse(pred.test(mapData));
 	}
+	@Test
+	public void testEqualsWithoutOpMatch() throws Exception {
+		PredicateFactoryJson factory = new PredicateFactoryJson();
+		Map<String, Object> mapData = new HashMap<>();
+		String rule ="{\"source\":\"weather2\"}";
+                // positive test
+		mapData.put("source", "weather2");
+		Predicate<Object> pred = factory.read(rule.getBytes());
+		Assert.assertTrue(pred.test(mapData));
+		// negative test
+		mapData.put("source", "weather3");
+		Assert.assertFalse(pred.test(mapData));
+	}
 }
