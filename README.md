@@ -29,7 +29,7 @@ The objective of this library is to create a `Predicate<Object>` based on a JSON
 The general form of a predicate is:
 ```json
 { 
-	"<path1>" : { "<operator>": "<value> | @<path2>" } 
+	"<path1>" : { "$<operator>": "<value> | @<path2>" } 
 }
 ```
 where:
@@ -60,6 +60,11 @@ Suppose there is a `List<Project>` where each project has a `String:name` attrib
 ```
 In this example, if we provide the filter value using a GUI the underlying Java code remains unchanged.
 
+## Syntatic suggars (rewrite engine)
+Soon a generic form to write your on rewrite class.
+
+By now, with the help of [@vampireslove](https://github.com/vampireslove) a predicate like:``{"name":"json-predicate"}`` is automatically rewritten to the normal form as ``{"name": {"$eq":"json-predicate"} }``.
+
 ## Converters
 Based on ```path1``` type the ```value``` is converted according to it. i.e for comparison with date the [`IConverter`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/value/impl/ConverterDefault.java) takes place and convert for types:
 | Attribute type | Value converted to compariosn using |
@@ -84,33 +89,33 @@ This class loads files in classpath (```json-predicate.properties```) with opera
 
 | Type | Example |
 | -- | -- |
-|\$and, \$& | ``` { "$and": [ {"name": {"$contains": "project"} }, { "created": {"$gt": "2021-06-29 00:31:45.000"} ] }``` |
-|\$or, \$\\| | ``` { "$or": [ {"name": {"$contains": "project"} }, { "id": {"$gt": "10"} ] }``` |
-|\$not, \$! | ``` { "$not": {"name": {"$eq": "null"} } }``` |
+|and, & | ``` { "$and": [ {"name": {"$contains": "project"} }, { "created": {"$gt": "2021-06-29 00:31:45.000"} ] }``` |
+|or, \\| | ``` { "$or": [ {"name": {"$contains": "project"} }, { "id": {"$gt": "10"} ] }``` |
+|not, ! | ``` { "$not": {"name": {"$eq": "null"} } }``` |
 
 ### Relational operators
 | Type | Example |
 | -- | -- |
-|\$eq, $==, $equals | ``` {"name": {"$eq": "projectA"} } ```|
-|\$ne, $!=, $notEquals | ``` {"name": {"$ne": "projectB"} }```|
-|\$lt, $<, $lowerThan | ``` {"revision": {"$lt": 10} }```|
-|\$le, $<=, $lowerEqualsThan | ``` {"revision": {"$le": 1} }```|
-|\$gt, $>, $greaterThan | ``` {"revision": {"$gt": 1} }```|
-|\$ge, $>=, $greaterEqualsThan | ``` {"revision": {"$ge": 2} }```|
+|eq, ==, equals | ``` {"name": {"$eq": "projectA"} } ```|
+|ne, !=, notEquals | ``` {"name": {"$ne": "projectB"} }```|
+|lt, \<, lowerThan | ``` {"revision": {"$lt": 10} }```|
+|le, \<=, lowerEqualsThan | ``` {"revision": {"$le": 1} }```|
+|gt, \>, greaterThan | ``` {"revision": {"$gt": 1} }```|
+|ge, \>=, greaterEqualsThan | ``` {"revision": {"$ge": 2} }```|
 
 ### String operators
 | Type | Example |
 | -- | -- |
-|\$contains, \$c | ``` {"name": {"$contains": "proj"} }```|
-|\$ncontains, \$nc, \$notContains, \$!contains, \$!c  | ``` {"name": {"$ncontains": "A"} }```|
-|\$match, \$m | ``` {"name": {"$match": "\d{8}"} }```|
-|\$nmatch, \$nm, \$notMatch, \$!match, \$!m | ``` {"name": {"$nmatch": "\d{8}"} }```|
+|contains, c | ``` {"name": {"$contains": "proj"} }```|
+|ncontains, nc, notContains, !contains, !c  | ``` {"name": {"$ncontains": "A"} }```|
+|match, m | ``` {"name": {"$match": "\d{8}"} }```|
+|nmatch, nm, notMatch, !match, !m | ``` {"name": {"$nmatch": "\d{8}"} }```|
 
 ### Set operators 
 | | |
 | -- | -- |
-|\$contains, \$c | ``` {"tags": {"$contains": "debug"} }``` |
-|\$ncontains, \$nc, \$notContains, \$!contains, \$!c  | ``` {"tags": {"$ncontains": "git"} }``` |
+|contains, c | ``` {"tags": {"$contains": "debug"} }``` |
+|ncontains, nc, notContains, !contains, !c  | ``` {"tags": {"$ncontains": "git"} }``` |
 
 ### Variable operators 
 You can use values reffering to another variables. i.e. if project changed date is greater than project creation date.
