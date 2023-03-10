@@ -61,7 +61,7 @@ Suppose there is a `List<Project>` where each project has a `String:name` attrib
 In this example, if we provide the filter value using a GUI the underlying Java code remains unchanged.
 
 ## Syntatic suggars (rewrite engine)
-Soon a generic form to write your on rewrite class.
+Soon a generic form to write your own rewrite class.
 
 By now, with the help of [@vampireslove](https://github.com/vampireslove) a predicate like:``{"name":"json-predicate"}`` is automatically rewritten to the normal form as ``{"name": {"$eq":"json-predicate"} }``.
 
