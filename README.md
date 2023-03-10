@@ -99,9 +99,9 @@ This class loads files in classpath (```json-predicate.properties```) with opera
 |eq, ==, equals | ``` {"name": {"$eq": "projectA"} } ```|
 |ne, !=, notEquals | ``` {"name": {"$ne": "projectB"} }```|
 |lt, \<, lowerThan | ``` {"revision": {"$lt": 10} }```|
-|le, \<=, lowerEqualsThan | ``` {"revision": {"$le": 1} }```|
+|le, lte, \<=, lowerEqualsThan | ``` {"revision": {"$le": 1} }```|
 |gt, \>, greaterThan | ``` {"revision": {"$gt": 1} }```|
-|ge, \>=, greaterEqualsThan | ``` {"revision": {"$ge": 2} }```|
+|ge, gte, \>=, greaterEqualsThan | ``` {"revision": {"$ge": 2} }```|
 
 ### String operators
 | Type | Example |
