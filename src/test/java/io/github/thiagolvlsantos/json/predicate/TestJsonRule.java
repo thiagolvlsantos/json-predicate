@@ -2,6 +2,7 @@ package io.github.thiagolvlsantos.json.predicate;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.wnameless.json.flattener.JsonFlattener;
 import io.github.thiagolvlsantos.json.predicate.impl.PredicateFactoryJson;
 import org.junit.Assert;
 import org.junit.Test;
@@ -518,6 +519,73 @@ public class TestJsonRule {
         map.put("str", "ab");
         boolean test = pred.test(map);
         Assert.assertTrue(test);
+    }
+    @Test
+    public void testFlattening() {
+        String rule = "{\n" +
+                "  \"$and\": [\n" +
+                "    {\n" +
+                "      \"status.weatherText\": {\n" +
+                "        \"$eq\": \"大雨啦\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+        Map<String, Object> map = JsonFlattener.flattenAsMap(event);
+        Predicate<Object> pred = factory.read(rule.getBytes());
+        boolean test = pred.test(map);
+        Assert.assertTrue(test);
+    }
+
+    @Test
+    public void testFlattening2() {
+        String rule = "{\n" +
+                "  \"$and\": [\n" +
+                "    {\n" +
+                "      \"status.weatherText\": {\n" +
+                "        \"$eq\": \"大雨啦22\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+        Map<String, Object> map = JsonFlattener.flattenAsMap(event);
+        Predicate<Object> pred = factory.read(rule.getBytes());
+        boolean test = pred.test(map);
+        Assert.assertFalse(test);
+    }
+
+    @Test
+    public void testFlattening3() {
+        String rule = "{\n" +
+                "  \"$and\": [\n" +
+                "    {\n" +
+                "      \"status.list[1].sceneId\": {\n" +
+                "        \"$eq\": \"7860\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+        Map<String, Object> map = JsonFlattener.flattenAsMap(event);
+        Predicate<Object> pred = factory.read(rule.getBytes());
+        boolean test = pred.test(map);
+        Assert.assertTrue(test);
+    }
+
+    @Test
+    public void testFlattening4() {
+        String rule = "{\n" +
+                "  \"$and\": [\n" +
+                "    {\n" +
+                "      \"status.list[1].sceneId\": {\n" +
+                "        \"$eq\": \"78608\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+        Map<String, Object> map = JsonFlattener.flattenAsMap(event);
+        Predicate<Object> pred = factory.read(rule.getBytes());
+        boolean test = pred.test(map);
+        Assert.assertFalse(test);
     }
 
 }
