@@ -5,9 +5,12 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import io.github.thiagolvlsantos.json.predicate.value.IAccess;
 import io.github.thiagolvlsantos.json.predicate.value.IConverter;
@@ -23,27 +26,36 @@ public class ConverterDefault implements IConverter {
 	@SneakyThrows
 	@Override
 	public Object convert(Object source, IAccess access, Object example, JsonNode value) {
-		String text = value.asText();
-		if (text.startsWith(VARIABLE)) {
-			return toAccess(source, access, text.substring(1));
-		} else if (example instanceof Boolean) {
-			return value.asBoolean();
-		} else if (example instanceof Short) {
-			return (short) value.asInt();
-		} else if (example instanceof Integer) {
-			return value.asInt();
-		} else if (example instanceof Long) {
-			return value.asLong();
-		} else if (example instanceof Float) {
-			return (float) value.asDouble();
-		} else if (example instanceof Double) {
-			return value.asDouble();
-		} else if (example instanceof Date) {
-			return toDate(value.asText());
-		} else if (example instanceof LocalDate) {
-			return toLocalDate(value.asText());
-		} else if (example instanceof LocalDateTime) {
-			return toLocalDateTime(value.asText());
+		if (value instanceof ArrayNode) {
+			ArrayNode arrayNode = (ArrayNode) value;
+			List<Object> array = new ArrayList<>(arrayNode.size());
+			for (int i = 0; i < arrayNode.size(); i++) {
+				array.add(convert(source, access, example, arrayNode.get(i)));
+			}
+			return array.toArray(new Object[0]);
+		} else {
+			String text = value.asText();
+			if (text.startsWith(VARIABLE)) {
+				return toAccess(source, access, text.substring(1));
+			} else if (example instanceof Boolean) {
+				return value.asBoolean();
+			} else if (example instanceof Short) {
+				return (short) value.asInt();
+			} else if (example instanceof Integer) {
+				return value.asInt();
+			} else if (example instanceof Long) {
+				return value.asLong();
+			} else if (example instanceof Float) {
+				return (float) value.asDouble();
+			} else if (example instanceof Double) {
+				return value.asDouble();
+			} else if (example instanceof Date) {
+				return toDate(text);
+			} else if (example instanceof LocalDate) {
+				return toLocalDate(text);
+			} else if (example instanceof LocalDateTime) {
+				return toLocalDateTime(text);
+			}
 		}
 		return value.asText();
 	}
