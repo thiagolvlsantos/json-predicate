@@ -116,6 +116,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 	private void fields(String gap, List<IPredicate> result, String key, JsonNode value) {
 		Iterator<Entry<String, JsonNode>> fs = value.fields();
 		if (!fs.hasNext()) {
+			// TODO: replace by a rewrite engine
 			String op = "$eq";
 			Class<? extends IPredicate> type = manager.get(op);
 			JsonNode va = value;

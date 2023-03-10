@@ -64,6 +64,33 @@ public class IssuesTest {
 
 	// Issue #2
 	@Test
+	public void testNotMemberOfEmptyArray() throws Exception {
+		String rule = "{\n" + " \"$and\": [\n" + " {\n" + " \"str\": {\n" + " \"$notMemberOf\": []\n" + " }\n" + " }\n"
+				+ " ]\n" + "}";
+		Predicate<Object> pred = factory.read(rule.getBytes());
+
+		Map<String, Object> mapData = new HashMap<>();
+
+		mapData.put("str", "ab");
+		Assert.assertTrue(pred.test(mapData));
+	}
+
+	@Test
+	public void testNotMemberOfArray() throws Exception {
+		String rule = "{\n" + " \"$and\": [\n" + " {\n" + " \"str\": {\n" + " \"$notMemberOf\": [1,3,5]\n" + " }\n"
+				+ " }\n" + " ]\n" + "}";
+		Predicate<Object> pred = factory.read(rule.getBytes());
+
+		Map<String, Object> mapData = new HashMap<>();
+
+		mapData.put("str", Integer.valueOf(2));
+		Assert.assertTrue(pred.test(mapData));
+
+		mapData.put("str", Integer.valueOf(1));
+		Assert.assertFalse(pred.test(mapData));
+	}
+
+	@Test
 	public void testMemberOfEmptyArray() throws Exception {
 		String rule = "{\n" + " \"$and\": [\n" + " {\n" + " \"str\": {\n" + " \"$memberOf\": []\n" + " }\n" + " }\n"
 				+ " ]\n" + "}";

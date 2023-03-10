@@ -116,6 +116,8 @@ This class loads files in classpath (```json-predicate.properties```) with opera
 | -- | -- |
 |contains, c | ``` {"tags": {"$contains": "debug"} }``` |
 |ncontains, nc, notContains, !contains, !c  | ``` {"tags": {"$ncontains": "git"} }``` |
+|memberOf, mo | ``` {"role": {"$memberOf": ["admin","user"]} }``` |
+|notMemberOf, nmo | ``` {"role": {"$notMemberOf": ["po"]} }``` |
 
 ### Variable operators 
 You can use values reffering to another variables. i.e. if project changed date is greater than project creation date.

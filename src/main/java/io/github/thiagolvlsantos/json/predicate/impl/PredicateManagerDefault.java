@@ -25,7 +25,7 @@ public class PredicateManagerDefault implements IPredicateManager {
 			Class<?> type = Class.forName(String.valueOf(e.getValue()));
 			for (String op : ops) {
 				log.trace("OP:{}, CLASS:{}", op, type);
-				map.put(op, (Class<? extends IPredicate>) type);
+				put(op, (Class<? extends IPredicate>) type);
 			}
 		}
 		log.info("OPS:{}", map);
