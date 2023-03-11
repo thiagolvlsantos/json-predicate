@@ -77,7 +77,9 @@ These converters can be replaced using respective set method in the predicate ma
 
 ## Predefined constructors
 
-There is a list of the built-in provided predicates, you can register you own predicate. Checkout the interface [`IPredicateManager`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/impl/PredicateManagerDefault.java) implementation which load operators from properties.
+There is a list of the built-in provided predicates, you can register you own predicate. Checkout the interface [`IPredicateManager`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/impl/PredicateManagerDefault.java) implementation which load operators from properties. 
+
+Operators names are case-insensitive, table camel-case names are only to help on reading.
 
 ```properties
 $and,$&=io.github.thiagolvlsantos.json.predicate.array.impl.PredicateAnd
@@ -107,9 +109,9 @@ This class loads files in classpath (```json-predicate.properties```) with opera
 | Type | Example |
 | -- | -- |
 |contains, c, regex | ``` {"name": {"$contains": "proj"} }```|
-|ncontains, nc, notContains, !contains, !c, nRegex, !regex  | ``` {"name": {"$ncontains": "A"} }```|
+|ncontains, nc, notContains, nRegex, !contains, !c, !regex  | ``` {"name": {"$ncontains": "A"} }```|
 |match, m | ``` {"name": {"$match": "\d{8}"} }```|
-|nmatch, nm, notMatch, !match, !m | ``` {"name": {"$nmatch": "\d{8}"} }```|
+|nMatch, nm, notMatch, !match, !m | ``` {"name": {"$nmatch": "\d{8}"} }```|
 
 ### Set operators 
 | | |
@@ -117,7 +119,7 @@ This class loads files in classpath (```json-predicate.properties```) with opera
 |contains, c | ``` {"tags": {"$contains": "debug"} }``` |
 |ncontains, nc, notContains, !contains, !c  | ``` {"tags": {"$ncontains": "git"} }``` |
 |memberOf, mo, in | ``` {"role": {"$memberOf": ["admin","user"]} }``` |
-|notMemberOf, nMemberOf, nmo, !memberOf, !mo, !in | ``` {"role": {"$notMemberOf": ["po"]} }``` |
+|nMemberOf, nmo, notContains, !memberOf, !mo, !in | ``` {"role": {"$notMemberOf": ["po"]} }``` |
 
 ### Variable operators 
 You can use values referring to another variables. i.e. if project changed date is greater than project creation date.
