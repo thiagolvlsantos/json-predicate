@@ -106,8 +106,8 @@ This class loads files in classpath (```json-predicate.properties```) with opera
 ### String operators
 | Type | Example |
 | -- | -- |
-|contains, c | ``` {"name": {"$contains": "proj"} }```|
-|ncontains, nc, notContains, !contains, !c  | ``` {"name": {"$ncontains": "A"} }```|
+|contains, c, regex | ``` {"name": {"$contains": "proj"} }```|
+|ncontains, nc, notContains, !contains, !c, nRegex, !regex  | ``` {"name": {"$ncontains": "A"} }```|
 |match, m | ``` {"name": {"$match": "\d{8}"} }```|
 |nmatch, nm, notMatch, !match, !m | ``` {"name": {"$nmatch": "\d{8}"} }```|
 
@@ -116,8 +116,8 @@ This class loads files in classpath (```json-predicate.properties```) with opera
 | -- | -- |
 |contains, c | ``` {"tags": {"$contains": "debug"} }``` |
 |ncontains, nc, notContains, !contains, !c  | ``` {"tags": {"$ncontains": "git"} }``` |
-|memberOf, mo | ``` {"role": {"$memberOf": ["admin","user"]} }``` |
-|notMemberOf, nMemberOf, nmo, !memberOf, !mo | ``` {"role": {"$notMemberOf": ["po"]} }``` |
+|memberOf, mo, in | ``` {"role": {"$memberOf": ["admin","user"]} }``` |
+|notMemberOf, nMemberOf, nmo, !memberOf, !mo, !in | ``` {"role": {"$notMemberOf": ["po"]} }``` |
 
 ### Variable operators 
 You can use values referring to another variables. i.e. if project changed date is greater than project creation date.
