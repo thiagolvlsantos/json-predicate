@@ -61,9 +61,9 @@ Suppose there is a `List<Project>` where each project has a `String:name` attrib
 In this example, if we provide the filter value using a GUI the underlying Java code remains unchanged.
 
 ## Syntatic suggars (rewrite engine)
-Soon a generic form to write your own rewrite class.
+There is an interface named ``IRewriter`` to rewrite a Json structure before processing, sometimes theres is a default implementation, by suggestion of [@vampireslove](https://github.com/vampireslove) a predicate like:``{"name":"json-predicate"}`` is automatically rewritten to the normal form as ``{"name": {"$eq":"json-predicate"} }``.
 
-By now, with the help of [@vampireslove](https://github.com/vampireslove) a predicate like:``{"name":"json-predicate"}`` is automatically rewritten to the normal form as ``{"name": {"$eq":"json-predicate"} }``.
+To replace this rewriter set your instante to the ``PredicateJsonFactory`` instante.
 
 ## Converters
 Based on ```path1``` type the ```value``` is converted according to it. i.e for comparison with date the [`IConverter`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/value/impl/ConverterDefault.java) takes place and convert for types:
@@ -109,7 +109,7 @@ This class loads files in classpath (```json-predicate.properties```) with opera
 | Type | Example |
 | -- | -- |
 |contains, c, regex | ``` {"name": {"$contains": "proj"} }```|
-|ncontains, nc, notContains, nRegex, !contains, !c, !regex  | ``` {"name": {"$ncontains": "A"} }```|
+|nContains, nc, notContains, nRegex, !contains, !c, !regex  | ``` {"name": {"$ncontains": "A"} }```|
 |match, m | ``` {"name": {"$match": "\d{8}"} }```|
 |nMatch, nm, notMatch, !match, !m | ``` {"name": {"$nmatch": "\d{8}"} }```|
 
