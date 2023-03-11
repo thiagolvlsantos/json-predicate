@@ -61,7 +61,10 @@ Suppose there is a `List<Project>` where each project has a `String:name` attrib
 In this example, if we provide the filter value using a GUI the underlying Java code remains unchanged.
 
 ## Syntatic suggars (rewrite engine)
-There is an interface named ``IRewriter`` to rewrite a Json structure before processing, sometimes theres is a default implementation, by suggestion of [@vampireslove](https://github.com/vampireslove) a predicate like:``{"name":"json-predicate"}`` is automatically rewritten to the normal form as ``{"name": {"$eq":"json-predicate"} }``.
+There is an interface named ``IRewriter`` to 
+rewrite a Json structure before processing.
+There is a default implementation,
+ by suggestion of [@vampireslove](https://github.com/vampireslove) a predicate like:``{"name":"json-predicate"}`` is automatically rewritten to the normal form as ``{"name": {"$eq":"json-predicate"} }``.
 
 To replace this rewriter set your instante to the ``PredicateJsonFactory`` instante.
 
@@ -77,7 +80,9 @@ These converters can be replaced using respective set method in the predicate ma
 
 ## Predefined constructors
 
-There is a list of the built-in provided predicates, you can register you own predicate. Checkout the interface [`IPredicateManager`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/impl/PredicateManagerDefault.java) implementation which load operators from properties. 
+There is a list of the built-in provided predicates, 
+you can register you own predicate. Checkout the interface 
+[`IPredicateManager`](https://github.com/thiagolvlsantos/json-predicate/blob/master/src/main/java/io/github/thiagolvlsantos/json/predicate/impl/PredicateManagerDefault.java) implementation which load operators from properties. 
 
 Operators names are case-insensitive, table camel-case names are only to help on reading.
 
