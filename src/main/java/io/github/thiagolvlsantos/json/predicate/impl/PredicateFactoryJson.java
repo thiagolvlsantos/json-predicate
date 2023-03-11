@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.thiagolvlsantos.json.predicate.IPredicate;
 import io.github.thiagolvlsantos.json.predicate.IPredicateFactory;
 import io.github.thiagolvlsantos.json.predicate.IPredicateManager;
-import io.github.thiagolvlsantos.json.predicate.IRewritter;
+import io.github.thiagolvlsantos.json.predicate.IRewriter;
 import io.github.thiagolvlsantos.json.predicate.array.IPredicateArray;
 import io.github.thiagolvlsantos.json.predicate.array.impl.PredicateAnd;
 import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
@@ -35,7 +35,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 
 	private ObjectMapper mapper = new ObjectMapper();
 	private IPredicateManager manager = new PredicateManagerDefault();
-	private IRewritter rewritter = new RewritterDefault();
+	private IRewriter rewriter = new RewriterDefault();
 	private IAccess access = new AccessDefault();
 	private IConverter converter = new ConverterDefault();
 
@@ -119,7 +119,7 @@ public class PredicateFactoryJson implements IPredicateFactory {
 		Iterator<Entry<String, JsonNode>> fs = value.fields();
 		if (!fs.hasNext()) {
 			JsonNode old = value;
-			value = rewritter.rewrite(value);
+			value = rewriter.rewrite(value);
 			log.debug("{} REWRITE>{} as {}", gap, old.toPrettyString(), value.toPrettyString());
 			fs = value.fields();
 		}

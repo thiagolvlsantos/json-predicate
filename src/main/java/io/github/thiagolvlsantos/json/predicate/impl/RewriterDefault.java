@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.github.thiagolvlsantos.json.predicate.IRewritter;
+import io.github.thiagolvlsantos.json.predicate.IRewriter;
 
-public class RewritterDefault implements IRewritter {
+public class RewriterDefault implements IRewriter {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
