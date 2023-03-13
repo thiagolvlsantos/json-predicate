@@ -8,9 +8,7 @@ import java.util.function.Predicate;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
 import io.github.thiagolvlsantos.json.predicate.impl.PredicateFactoryJson;
 
 public class IssuesTest {
@@ -164,23 +162,5 @@ public class IssuesTest {
 		// negative test
 		mapData.put("str", Integer.valueOf(2));
 		Assert.assertFalse(pred.test(mapData));
-	}
-
-	@org.junit.Rule
-	public ExpectedException thrown = ExpectedException.none();
-
-	@Test
-	public void testMemberOfInvalidValue() throws Exception {
-		String rule = "{\n" + " \"$and\": [\n" + " {\n" + " \"str\": {\n" + " \"$memberOf\": \"anyvalue\"\n" + " }\n"
-				+ " }\n" + " ]\n" + "}";
-		Predicate<Object> pred = factory.read(rule.getBytes());
-
-		Map<String, Object> mapData = new HashMap<>();
-		mapData.put("str", "abc");
-
-		thrown.expect(JsonPredicateException.class);
-		thrown.expectMessage(
-				"Value is neither a Collection nor an Array. Received: 'anyvalue' of type java.lang.String");
-		pred.test(mapData);
 	}
 }

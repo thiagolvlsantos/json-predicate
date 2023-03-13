@@ -1,6 +1,7 @@
 package io.github.thiagolvlsantos.json.predicate;
 
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -587,6 +588,59 @@ public class TestJsonRule {
         Assert.assertTrue(test);
         //
         map.put("str","de");
+        test = pred.test(map);
+        Assert.assertFalse(test);
+    }
+    
+
+    @Test
+    public void testListInMatch() throws Exception {
+        String rule = "{\n" +
+                "  \"$and\": [\n" +
+                "    {\n" +
+                "      \"str\": {\n" +
+                "        \"$in\": [\n" +
+                "          \"ab\",\n" +
+                "          \"bc\",\n" +
+                "          \"ef\"\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+        Predicate<Object> pred = factory.read(rule.getBytes());
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("str", Arrays.asList("ab","bc"));
+        boolean test = pred.test(map);
+        Assert.assertTrue(test);
+        //
+        map.put("str", Arrays.asList("ab","bb"));
+        test = pred.test(map);
+        Assert.assertFalse(test);
+    }
+    
+    @Test
+    public void testArrayInMatch() throws Exception {
+        String rule = "{\n" +
+                "  \"$and\": [\n" +
+                "    {\n" +
+                "      \"str\": {\n" +
+                "        \"$in\": [\n" +
+                "          \"ab\",\n" +
+                "          \"bc\",\n" +
+                "          \"ef\"\n" +
+                "        ]\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+        Predicate<Object> pred = factory.read(rule.getBytes());
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("str", new String[] {"ab","ef"});
+        boolean test = pred.test(map);
+        Assert.assertTrue(test);
+        //
+        map.put("str", new String[]{"ab","bb"});
         test = pred.test(map);
         Assert.assertFalse(test);
     }

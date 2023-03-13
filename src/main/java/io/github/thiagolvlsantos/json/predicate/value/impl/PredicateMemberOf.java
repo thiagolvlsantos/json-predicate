@@ -2,12 +2,11 @@ package io.github.thiagolvlsantos.json.predicate.value.impl;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
 import io.github.thiagolvlsantos.json.predicate.value.AbstractPredicateValue;
 import io.github.thiagolvlsantos.json.predicate.value.IAccess;
 import io.github.thiagolvlsantos.json.predicate.value.IConverter;
@@ -25,33 +24,24 @@ public class PredicateMemberOf extends AbstractPredicateValue {
 	}
 
 	protected boolean check(Object base, Object tmp) {
-		if (tmp instanceof Collection<?>) {
-			for (Iterator<?> iterator = ((Collection<?>) tmp).iterator(); iterator.hasNext();) {
-				Object obj = iterator.next();
-				if (innerCheck(base, obj)) {
-					return true;
-				}
-			}
-			return false;
-		}
-		if (tmp != null && tmp.getClass().isArray()) {
-			for (int i = 0; i < Array.getLength(tmp); i++) {
-				Object obj = Array.get(tmp, i);
-				if (innerCheck(base, obj)) {
-					return true;
-				}
-			}
-			return false;
-		}
-		throw new JsonPredicateException("Value is neither a Collection nor an Array. Received: '" + tmp + "' of type "
-				+ (tmp != null ? tmp.getClass().getName() : null), null);
+		List<Object> left = toList(base);
+		List<Object> right = toList(tmp);
+		return left.stream().allMatch(v -> right.contains(v));
 	}
 
-	protected boolean innerCheck(Object base, Object tmp) {
-		if (tmp instanceof String) {
-			return String.valueOf(base).equals(tmp);
-		} else {
-			return Objects.equals(base, tmp);
+	protected List<Object> toList(Object obj) {
+		List<Object> result = new LinkedList<>();
+		if (obj instanceof Collection<?>) {
+			result.addAll((Collection<?>) obj);
 		}
+		if (obj != null && obj.getClass().isArray()) {
+			for (int i = 0; i < Array.getLength(obj); i++) {
+				result.add(Array.get(obj, i));
+			}
+		}
+		if (result.isEmpty()) {
+			result.add(obj);
+		}
+		return result;
 	}
 }
