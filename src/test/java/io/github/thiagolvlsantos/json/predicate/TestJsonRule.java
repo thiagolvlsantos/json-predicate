@@ -1,64 +1,74 @@
 package io.github.thiagolvlsantos.json.predicate;
 
 
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.wnameless.json.flattener.JsonFlattener;
 
-import io.github.thiagolvlsantos.json.predicate.exceptions.JsonPredicateException;
 import io.github.thiagolvlsantos.json.predicate.impl.PredicateFactoryJson;
 
 public class TestJsonRule {
 
-    String event = "{\r\n" +
-            "  \"source\": \"weather\",\r\n" +
-            "  \"serviceName\": \"iot-weather\",\r\n" +
-            "  \"cloudType\": \"aliyun\",\r\n" +
-            "  \"scope\": \"Service\",\r\n" +
-            "  \"metricId\": 1234,\r\n" +
-            "  \"spaceId\": 1000,\r\n" +
-            "  \"metricType\": \"MetricType\",\r\n" +
-            "  \"resources\": [\r\n" +
-            "    \"0001\",\r\n" +
-            "    \"0002\"\r\n" +
-            "  ],\r\n" +
-            "  \"status\": {\r\n" +
-            "    \"timestamp\": 1619486736228,\r\n" +
-            "    \"msgId\": \"3431\",\r\n" +
-            "    \"cityNo\": \"101280604\",\r\n" +
-            "    \"updateTime\": \"2021-07-27 17:00:00\",\r\n" +
-            "    \"temperature\": 25,\r\n" +
-            "    \"wetness\": 89,\r\n" +
-            "    \"weatherText\": \"大雨啦\",\r\n" +
-            "    \"windForce\": \"8.3km/h\",\r\n" +
-            "    \"windDirection\": \"SW\",\r\n" +
-            "    \"pm25\": 23,\r\n" +
-            "    \"rainProbability\": \"18\",\r\n" +
-            "    \"state\": \"running\",\r\n" +
-            "    \"source-ip\": \"10.0.0.33\",\r\n" +
-            "    \"list\": [\r\n" +
-            "      {\r\n" +
-            "        \"sceneId\": \"7890\",\r\n" +
-            "        \"enable\": \"true\"\r\n" +
-            "      },\r\n" +
-            "      {\r\n" +
-            "        \"sceneId\": \"7860\",\r\n" +
-            "        \"enable\": \"true\"\r\n" +
-            "      }\r\n" +
-            "    ]\r\n" +
-            "  }\r\n" +
-            "}";
+    private static final String UTF_8 = "utf-8";
 
-    private static IPredicateFactory factory = new PredicateFactoryJson();
+	private static String event;
+    private static ObjectMapper mapper;
+    private static Map<?,?> map;
+    private static IPredicateFactory factory;
 
+    
+    @BeforeClass
+    public static void setup() throws Exception {
+    	event = "{\r\n" +
+                "  \"source\": \"weather\",\r\n" +
+                "  \"serviceName\": \"iot-weather\",\r\n" +
+                "  \"cloudType\": \"aliyun\",\r\n" +
+                "  \"scope\": \"Service\",\r\n" +
+                "  \"metricId\": 1234,\r\n" +
+                "  \"spaceId\": 1000,\r\n" +
+                "  \"metricType\": \"MetricType\",\r\n" +
+                "  \"resources\": [\r\n" +
+                "    \"0001\",\r\n" +
+                "    \"0002\"\r\n" +
+                "  ],\r\n" +
+                "  \"status\": {\r\n" +
+                "    \"timestamp\": 1619486736228,\r\n" +
+                "    \"msgId\": \"3431\",\r\n" +
+                "    \"cityNo\": \"101280604\",\r\n" +
+                "    \"updateTime\": \"2021-07-27 17:00:00\",\r\n" +
+                "    \"temperature\": 25,\r\n" +
+                "    \"wetness\": 89,\r\n" +
+                "    \"weatherText\": \"大雨啦\",\r\n" +
+                "    \"windForce\": \"8.3km/h\",\r\n" +
+                "    \"windDirection\": \"SW\",\r\n" +
+                "    \"pm25\": 23,\r\n" +
+                "    \"rainProbability\": \"18\",\r\n" +
+                "    \"state\": \"running\",\r\n" +
+                "    \"source-ip\": \"10.0.0.33\",\r\n" +
+                "    \"list\": [\r\n" +
+                "      {\r\n" +
+                "        \"sceneId\": \"7890\",\r\n" +
+                "        \"enable\": \"true\"\r\n" +
+                "      },\r\n" +
+                "      {\r\n" +
+                "        \"sceneId\": \"7860\",\r\n" +
+                "        \"enable\": \"true\"\r\n" +
+                "      }\r\n" +
+                "    ]\r\n" +
+                "  }\r\n" +
+                "}";
+    	 mapper = new ObjectMapper();
+    	 map = mapper.readValue(event, HashMap.class);
+    	 factory = new PredicateFactoryJson();
+    }
 
     @Test
     public void testEmptyData() throws Exception {
@@ -69,11 +79,8 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        Map<String, Object> mapData = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
-        boolean test = pred.test(mapData);
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
+        boolean test = pred.test(new HashMap<>());
         Assert.assertFalse(test);
     }
 
@@ -86,9 +93,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -104,10 +109,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -126,12 +128,9 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
         boolean test = false;
         try {
-            Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+            Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
             test = pred.test(map);
         } catch (Exception e) {
             test = false;
@@ -150,9 +149,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -168,9 +165,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -207,13 +202,11 @@ public class TestJsonRule {
                 "    ]\n" +
                 "  }\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertFalse(test);
         //
-        Predicate<Object> pred2 = factory.read(rule2.getBytes("utf-8"));
+        Predicate<Object> pred2 = factory.read(rule2.getBytes(UTF_8));
         boolean test2 = pred2.test(map);
         Assert.assertTrue(test2);
     }
@@ -240,10 +233,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -260,9 +250,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -278,9 +266,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -300,9 +286,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -322,9 +306,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -344,9 +326,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -366,9 +346,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -384,9 +362,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -402,9 +378,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -418,10 +392,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -441,11 +412,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -468,11 +435,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -502,10 +465,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -536,10 +496,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        System.out.println(rule);
-        ObjectMapper mapper = new ObjectMapper();
-        HashMap map = mapper.readValue(event, HashMap.class);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         boolean test = pred.test(map);
         Assert.assertTrue(test);
     }
@@ -560,7 +517,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         Map<String, Object> map = new HashMap<>(2);
         map.put("str", "ab");
         boolean test = pred.test(map);
@@ -583,7 +540,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         Map<String, Object> map = new HashMap<>(2);
         map.put("str", "ab");
         boolean test = pred.test(map);
@@ -610,7 +567,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         Map<String, Object> map = new HashMap<>(2);
         map.put("str", Arrays.asList("ab","bc"));
         boolean test = pred.test(map);
@@ -636,7 +593,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         Map<String, Object> map = new HashMap<>(2);
         map.put("str", new String[] {"ab","ef"});
         boolean test = pred.test(map);
@@ -662,7 +619,7 @@ public class TestJsonRule {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
         Map<String, Object> map = new HashMap<>(2);
         map.put("str", "ab");
         boolean test = pred.test(map);
@@ -685,9 +642,8 @@ public class TestJsonRule {
                 "  ]\n" +
                 "}";
         Map<String, Object> map = JsonFlattener.flattenAsMap(event);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
-        boolean test = pred.test(map);
-        Assert.assertTrue(test);
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
+        Assert.assertTrue(pred.test(map));
     }
 
     @Test
@@ -702,9 +658,8 @@ public class TestJsonRule {
                 "  ]\n" +
                 "}";
         Map<String, Object> map = JsonFlattener.flattenAsMap(event);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
-        boolean test = pred.test(map);
-        Assert.assertFalse(test);
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
+        Assert.assertFalse(pred.test(map));
     }
 
     @Test
@@ -719,9 +674,8 @@ public class TestJsonRule {
                 "  ]\n" +
                 "}";
         Map<String, Object> map = JsonFlattener.flattenAsMap(event);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
-        boolean test = pred.test(map);
-        Assert.assertTrue(test);
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
+        Assert.assertTrue(pred.test(map));
     }
 
     @Test
@@ -736,8 +690,7 @@ public class TestJsonRule {
                 "  ]\n" +
                 "}";
         Map<String, Object> map = JsonFlattener.flattenAsMap(event);
-        Predicate<Object> pred = factory.read(rule.getBytes("utf-8"));
-        boolean test = pred.test(map);
-        Assert.assertFalse(test);
+        Predicate<Object> pred = factory.read(rule.getBytes(UTF_8));
+        Assert.assertFalse(pred.test(map));
     }
 }
