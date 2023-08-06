@@ -182,6 +182,6 @@ can be read by a Jackson `ObjectMapper` just like this:
  
  As a generic solution there could be a `Rule` class with `condition` as `String` for storage/serialization/deserialization in CRUD features, and a `RuleExec` with `condition` as `Predicate<Object>` to the moments where the rule is expected to be processed. It`s up to you use what fit your needs.
 
-## Build
+## Building
 
 Localy, from this root directory call Maven commands or `bin/<script name>` at your will.
