@@ -4,7 +4,7 @@
 
 	<groupId>io.github.thiagolvlsantos</groupId>
 	<artifactId>json-predicate</artifactId>
-	<version>0.0.8</version>
+	<version>0.0.9-SNAPSHOT</version>
 
 	<name>${project.artifactId}</name>
 	<description>Predicate&lt;Object&gt; automatic creation from JSON queries.</description>
