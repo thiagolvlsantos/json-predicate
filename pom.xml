@@ -47,7 +47,7 @@
 		<json-flattener.version>0.7.1</json-flattener.version>
 		
 		<!-- PERSONAL -->
-		<git-commons.version>1.0.32</git-commons.version>
+		<git-commons.version>1.0.31</git-commons.version>
 	</properties>
 
 	<scm>
