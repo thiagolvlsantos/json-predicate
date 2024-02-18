@@ -52,7 +52,7 @@ Suppose there is a `List<Project>` where each project has a `String:name` attrib
 	IPredicateFactory factory = new PredicateFactoryJson();
 
 	String filter = "{\"name\":{\"$contains\": \"project\"}}";
-	Predicate<Object> p = factory.read(filter);
+	Predicate<Object> p = factory.read(filter.getBytes());
 
 	List<Project> projects = ...// loaded list from somewhere
 	return projects.stream().filter(p).collect(Collectors.toList());
