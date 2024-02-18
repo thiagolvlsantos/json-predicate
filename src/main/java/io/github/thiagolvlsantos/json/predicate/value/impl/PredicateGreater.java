@@ -12,12 +12,13 @@ public class PredicateGreater extends AbstractPredicateValue {
 		super(key, access, value, converter);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean test(Object t) {
 		Object left = left(t);
 		Object right = right(t, left);
 		if (left instanceof Comparable && left.getClass() == right.getClass()) {
-			return ((Comparable) left).compareTo(right) > 0;
+			return ((Comparable<Object>) left).compareTo(right) > 0;
 		}
 		if (left instanceof Number && right instanceof Number) {
 			return ((Number) left).doubleValue() - ((Number) right).doubleValue() > 0;
